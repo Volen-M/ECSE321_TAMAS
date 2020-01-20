@@ -1,0 +1,169 @@
+package ca.mcgill.ecse321.tamas;
+
+import static org.junit.Assert.*;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import ca.mcgill.ecse321.tamas.authentication.TestAuthentication;
+import ca.mcgill.ecse321.tamas.controller.TestController;
+import ca.mcgill.ecse321.tamas.model.Course;
+import ca.mcgill.ecse321.tamas.model.CourseWorker;
+import ca.mcgill.ecse321.tamas.model.DepartmentAdministrator;
+import ca.mcgill.ecse321.tamas.model.Evaluation;
+import ca.mcgill.ecse321.tamas.model.Instructor;
+import ca.mcgill.ecse321.tamas.model.Job;
+import ca.mcgill.ecse321.tamas.model.JobApplication;
+import ca.mcgill.ecse321.tamas.model.Tamas;
+import ca.mcgill.ecse321.tamas.model.User;
+import ca.mcgill.ecse321.tamas.persistence.TestPersistence;
+
+@RunWith(Suite.class)
+@SuiteClasses({ TestController.class, TestAuthentication.class, TestPersistence.class })
+public class AllTests {
+
+
+	//Initializing all objects 
+	
+		String coursename = "ECSE321";
+		int coursebudget= 1000;//random number
+		int courseeffective= 100;//random number
+		int coursecredits = 3;//Can change 
+		int coursehours= 3;//Can change 
+		int coursetutorial= 2;
+		int courselab= 2;
+		ArrayList<Job> coursejobs = new ArrayList<Job>();
+		Tamas Tm = new Tamas(); 
+
+		int hours = 45;//random
+		int ID = 111111111 ;//random
+		String experience= "noexperience";//can change
+		String name= "John";//same as username
+		String password = "guest01";
+
+
+		String s = "John"; 
+		String description= "This is course is an introduction to software Design"; 
+
+		String username = "Marc"; 
+		String aname = "Marc"; 
+
+		Calendar cal = Calendar.getInstance();
+		//cal.set(2017,Calendar.MARCH,4,8,30,0);
+		Date DeadlineDate = new Date(cal.getTimeInMillis());
+		Time DeadlineTime = new Time(cal.getTimeInMillis());
+		Time sTime = new Time(cal.getTimeInMillis());
+		Time eTime = new Time(cal.getTimeInMillis());
+		String title = "TAforECSE321"; 
+		String descrip = "Give tutorials for ECSE321";
+
+		Calendar c = Calendar.getInstance();
+		//c.set(2017,Calendar.MARCH,04,8,30,0);
+		Date ApplicationDate = new Date(c.getTimeInMillis());
+		Time ApplicationTime = new Time(c.getTimeInMillis());
+		int ApplicationRank = 1; 
+		//Create instances of all classes 
+
+		//Create course
+		Course FirstCourse = new Course(coursename, coursebudget,courseeffective ,coursecredits,coursehours, coursetutorial, courselab,Tm);
+
+		//Create course workers 
+		CourseWorker Cs = new CourseWorker(name, password,hours, ID, experience);
+
+		//Create department administrator
+		DepartmentAdministrator da = new DepartmentAdministrator(s , s);
+
+		//Create Job
+		Job TaJ = new Job(sTime, eTime, DeadlineDate, DeadlineTime,title, descrip, Cs, FirstCourse);
+
+		//Create instructor
+		Instructor Instruc = new Instructor(username, aname);
+
+		//Create evaluation 
+		Evaluation Eval = new Evaluation(description, FirstCourse, TaJ, Instruc, Cs);
+
+		// Create new Job application
+		JobApplication ApMartin = new JobApplication(ApplicationDate, ApplicationTime, ApplicationRank , Cs,TaJ);
+
+	//Testing methods
+
+	//Course methods 
+	
+	@Test
+	public void testCourse(){
+		Course FirstCourse =null;
+		
+		assertEquals(true , FirstCourse.setName("ECSE321") ); 
+		assertEquals(false, FirstCourse.setName(""));
+		assertEquals(true, FirstCourse.setName("1231-7"));
+		
+		assertEquals(true, FirstCourse.setStudentsEnrolled(100) );
+		assertEquals(true, FirstCourse.setStudentsEnrolled(0) );
+		assertEquals(false, FirstCourse.setStudentsEnrolled(-100) );
+		
+		assertEquals(true, FirstCourse.setBudget(1000));
+		assertEquals(true, FirstCourse.setBudget(0));
+		assertEquals(false, FirstCourse.setBudget(-1000));
+		
+		assertEquals(true, FirstCourse.setCredits(3));
+		assertEquals(true, FirstCourse.setCredits(0));
+		assertEquals(false, FirstCourse.setCredits(-3));
+		
+		assertEquals(true, FirstCourse.setHours(3));
+		assertEquals(false, FirstCourse.setHours(0));
+		assertEquals(false, FirstCourse.setHours(-1));
+	
+		assertEquals(true, FirstCourse.setTutorialCount(2));
+		assertEquals(true, FirstCourse.setTutorialCount(0));
+		assertEquals(false, FirstCourse.setTutorialCount(-1));
+		
+		assertEquals(true, FirstCourse.setLabCount(2));
+		assertEquals(true, FirstCourse.setLabCount(0));
+		assertEquals(false, FirstCourse.setLabCount(-1));	
+		
+		assertEquals(true, FirstCourse.setTamas(Tm));
+		
+		assertEquals("ECSE321", FirstCourse.getName());
+		
+		assertEquals(1000, FirstCourse.getBudget());
+
+		assertEquals(3, FirstCourse.getCredits());
+		
+		assertEquals(100, FirstCourse.getStudentsEnrolled());
+
+		assertEquals(Tm, FirstCourse.getTamas());
+		
+		assertEquals(2, FirstCourse.getTutorialCount());
+		
+		assertEquals(2, FirstCourse.getLabCount());
+
+		
+		assertEquals(true,FirstCourse.addOrMoveJobPostingAt(TaJ,3)  );
+		assertEquals(true, FirstCourse.addOrMoveJobPostingAt(TaJ,2));
+		assertEquals(false,FirstCourse.addOrMoveJobPostingAt(TaJ,1) );
+		assertEquals(false,FirstCourse.addOrMoveJobPostingAt(TaJ,-1) );
+		 
+		assertEquals(true, FirstCourse.hasJobPostings() );
+		
+		assertEquals(1, FirstCourse.indexOfJobPosting(TaJ) );
+		
+		assertEquals(1, FirstCourse.numberOfJobPostings());
+ 
+		assertEquals(true, FirstCourse.removeJobPosting(TaJ)); 
+ 
+
+
+
+	}
+
+
+
+}

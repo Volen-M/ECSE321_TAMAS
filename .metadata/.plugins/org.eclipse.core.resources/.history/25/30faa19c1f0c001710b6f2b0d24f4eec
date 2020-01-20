@@ -1,0 +1,106 @@
+package ca.mcgill.ecse321.tamas;
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Calendar;
+import java.io.File;
+
+import ca.mcgill.ecse321.tamas.authentication.TestAuthentication;
+import ca.mcgill.ecse321.tamas.controller.TestController;
+import ca.mcgill.ecse321.tamas.model.Course;
+import ca.mcgill.ecse321.tamas.model.CourseWorker;
+import ca.mcgill.ecse321.tamas.model.DepartmentAdministrator;
+import ca.mcgill.ecse321.tamas.model.Evaluation;
+import ca.mcgill.ecse321.tamas.model.Instructor;
+import ca.mcgill.ecse321.tamas.model.Job;
+import ca.mcgill.ecse321.tamas.model.JobApplication;
+import ca.mcgill.ecse321.tamas.model.Tamas;
+import ca.mcgill.ecse321.tamas.model.User;
+import ca.mcgill.ecse321.tamas.persistence.TestPersistence;
+
+@RunWith(Suite.class)
+@SuiteClasses({ TestController.class, TestAuthentication.class, TestPersistence.class })
+public class AllTests {
+
+	
+	//Initializing all objects 
+	
+    String coursename = "ECSE321";
+    int coursebudget= 1000;//random number
+    int courseeffective= 100;//random number
+    int coursecredits = 3;//Can change 
+    int coursehours= 3;//Can change 
+    int coursetutorial= 2;
+    int courselab= 2;
+    ArrayList<Job> coursejobs = new ArrayList<Job>();
+    Tamas Tm = new Tamas(); 
+
+	int hours = 45;//random
+	String ID = "111111111";//random
+	String experience= "noexperience";//can change
+	String name= "John";//same as username
+	String password = "guest01";
+	
+	
+	String s = "John"; 
+	String description= "This is course is an introduction to software Design"; 
+	
+	String username = "Marc"; 
+	String aname = "Marc"; 
+	
+	Calendar cal = Calendar.getInstance();
+	//cal.set(2017,Calendar.MARCH,4,8,30,0);
+	Date DeadlineDate = new Date(cal.getTimeInMillis());
+	Time DeadlineTime = new Time(cal.getTimeInMillis());
+	Time sTime = new Time(cal.getTimeInMillis());
+	Time eTime = new Time(cal.getTimeInMillis());
+	String title = "TAforECSE321"; 
+	String descrip1 = "Give tutorials for ECSE321";
+	
+	Calendar c = Calendar.getInstance();
+	//c.set(2017,Calendar.MARCH,04,8,30,0);
+	Date ApplicationDate = new Date(c.getTimeInMillis());
+	Time ApplicationTime = new Time(c.getTimeInMillis());
+	int ApplicationRank = 1; 
+	//Create instances of all classes 
+	
+	//Create course 
+	Course FirstCourse = new Course(coursename, coursebudget,courseeffective ,coursecredits,coursehours, coursetutorial, courselab,Tm);
+	
+	//Create course workers 
+	CourseWorker Cs = new CourseWorker(name, password, name,hours,ID, experience);
+	
+	//Create department administrator
+	DepartmentAdministrator da = new DepartmentAdministrator(s , s);
+	
+	//Create Job
+	Job J = new Job(sTime, eTime, DeadlineDate, DeadlineTime,title, String descrip, Cs, FirstCourse);
+	
+	//Create evaluation 
+	Evaluation Eval = new Evaluation(description, FirstCourse, J, Instruc, Cs);
+			
+	//Create instructor
+	Instructor Instruc = new Instructor(username, aname);
+	
+	// Create new Job application
+	JobApplication ApMartin = new JobApplication(ApplicationDate, ApplicationTime,ApplicationRank , Cs,J);
+	
+	//Create User  
+	User user1 = new User("Kevin", "Kevin");
+	
+	//Testing methods
+	
+	//Course methods 
+	
+	assertEquals("ECSE321",Course.getName()); 
+	assertEquals(1000, Course.getBudget());
+	assertEquals(100, Course.getStudents());
+	assertEquals(3 , Course.getHours());
+	assertEquals(2 , Course.getTutorialCount);
+	assertEquals(2 , Course.getLabCount);
+	
+}

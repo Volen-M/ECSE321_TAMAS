@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_posting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.mcgill.ecse321.tamas.mobile.view.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Course List"
+                android:layout_weight="0.02" />
+
+            <Spinner
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/courseSpinner"/>
+
+            <EditText
+                android:hint="Course Title"
+                android:id="@+id/courseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout3"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount_course_hrs"
+                    android:layout_weight="1"/>
+
+                <EditText
+
+                    android:id="@+id/hours_course"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/amount_labs"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:id= "@+id/hours_labs"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/amount_tutorials" />
+
+                <EditText
+                    android:id="@+id/nbr_tutorials"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/amount_enrolled_students"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:id= "@+id/nbr_enrolled_students"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id= "@+id/budget_label"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/budget"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:id= "@+id/budget"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/load_course_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="loadCourse"
+                android:text="@string/load_course_button" />
+            <Button
+                android:id="@+id/add_course_button"
+                android:layout_width="150dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:onClick="addCourse"
+                android:text="@string/add_course_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/delete_course_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="deleteCourse"
+                android:visibility="gone"
+                android:text="@string/delete_course_button" />
+
+            <Button
+                android:id="@+id/open_admin_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="openAdminPage"
+                android:text="@string/admin_page" />
+        </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background='#000000'
+                android:layout_marginTop="40dp"/>
+
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Job List"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/jobSpinner"/>
+
+
+            <Button
+                android:id="@+id/loadJob_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="loadJob"
+                android:text="Load Job"/>
+
+        <EditText
+            android:hint="Job Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/jobTitle"
+            android:layout_marginTop="15dp" />
+
+        <EditText
+            android:hint ="Job Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id = "@+id/jobDescription"
+            android:layout_marginTop="36dp" />
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id ="@+id/deadlineDate">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/application_date_label"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/application_first_date"
+                    android:layout_gravity="end"
+                    android:id="@+id/application_date"
+                    android:onClick="showDatePickerDialog"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/deadlineDate"
+                android:id="@+id/deadlineTime">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/application_deadlineTime_label"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/application_deadlineTime"
+                    android:layout_gravity="end"
+                    android:id="@+id/application_deadline_time"
+                    android:onClick="showTimePickerDialog"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="Job Information"
+                android:textStyle="italic"
+                android:id = "@+id/jobInfo"
+                android:layout_marginTop="20dp" />
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:id = "@+id/work_startTime">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Work Start Time"/>
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/application_deadlineTime"
+                    android:layout_gravity="end"
+                    android:id="@+id/work_start_time"
+                    android:onClick="showTimePickerDialog"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:id = "@+id/work_endTime">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Work end Time"/>
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/application_deadlineTime"
+                    android:layout_gravity="end"
+                    android:id="@+id/work_end_time"
+                    android:onClick="showTimePickerDialog"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/layoutChkbox">
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                <RadioButton
+                    android:id="@+id/androidChkBox_monday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="10dp"
+                    android:text="Monday"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/androidChkBox_tuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="10dp"
+                    android:text="Tuesday"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/androidChkBox_wednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="10dp"
+                    android:text="Wednesday"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/androidChkBox_thursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="10dp"
+                    android:text="Thursday"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/androidChkBox_friday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="10dp"
+                    android:text="Friday"
+                    android:textSize="14sp"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layoutChkbox"
+                android:id = "@+id/totalWeeklyhours">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "Total Work Hours Per Week:"
+                    android:layout_weight="1"/>
+
+                <EditText
+                    android:id= "@+id/totalhours_week"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Job Type:"
+                    android:textStyle="bold"
+                    android:id="@+id/jobType"/>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grader"
+                    android:id="@+id/radioGrader"/>
+
+                <RadioButton
+                    android:layout_width="217dp"
+                    android:layout_height="wrap_content"
+                    android:text="Teaching Assistant"
+                    android:id="@+id/radioTA"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lab Technician"
+                    android:id="@+id/radioTechnician"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+            <Button
+                android:text="Add Job"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_job_button"
+                android:onClick="addJob"/>
+
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:onClick="deleteJob"
+                android:visibility="gone"
+                android:text="Delete Job" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text = "Apply to Job"
+                android:id="@+id/applyJob"
+                android:onClick="applyJob"/>
+
+            <Button
+                android:id="@+id/acceptJob_button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:onClick="acceptJob"
+                android:text="Accept Job"/>
+
+            <Button
+                android:id="@+id/declineJob_button"
+                android:layout_width="120dp"
+                android:onClick="declineJob"
+                android:layout_height="wrap_content"
+                android:text="Decline Job"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background='#000000'
+                android:layout_marginTop="40dp"/>
+
+
+            <Spinner
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/employeeSpinner"
+                android:layout_marginTop="15dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp">
+
+            <Button
+                android:id="@+id/loadEmployee"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:onClick="viewEmploy"
+                android:text="Load Employee" />
+
+        </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/experience_heading"
+                android:hint="@string/experience_heading"
+                android:layout_marginTop="10dp"/>
+
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioUndergrad"
+                    android:text = "Undergraduate"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioGrad"
+                    android:text = "Graduate"/>
+                </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

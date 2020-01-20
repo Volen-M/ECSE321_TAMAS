@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>.org.eclipse.dltk.core.external.folders</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>.link2</name>
+			<type>2</type>
+			<location>C:/Users/Botengu/Desktop/ECSE 321/Group01/.metadata/.plugins/org.eclipse.php.core/__language__/4314896d</location>
+		</link>
+		<link>
+			<name>.link3</name>
+			<type>2</type>
+			<location>C:/Users/Botengu/Desktop/ECSE 321/Group01/.metadata/.plugins/org.eclipse.php.core/__language__/b7d75f44</location>
+		</link>
+	</linkedResources>
+</projectDescription>

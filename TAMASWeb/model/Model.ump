@@ -1,0 +1,70 @@
+namespace ca.mcgill.ecse321.tamas.model;
+
+class Tamas {
+  1 <@>- * Course courses;
+  0..1 <@>- * User users; // We will want to ensure in our controller that we have atleast 1 user - if not make a default admin user.
+}
+
+class Course {
+  1 <@>- * Job jobPostings;
+  String name;
+  double budget;
+  int studentsEnrolled;
+  int credits;
+  int hours;
+  int tutorialCount;
+  int labCount;
+}
+
+class Job {
+  1 <@>- * JobApplication jobApplications;
+  0..1 <@>- 0..1 CourseWorker allocatedWorker;
+  day { MONDAY{} TUESDAY{} WEDNESDAY{} THURSDAY{} FRIDAY{} SATURDAY{} SUNDAY{} };
+  type { TUTORIAL{} LAB{} GRADER{} } // This enumeration decides how we expose the number of hours.
+  Time startTime;
+  Time endTime;
+  Date deadlineDate;
+  Time deadlineTime;
+  String title;
+  String description;
+}
+
+class JobApplication {
+  0..1 -> 1 CourseWorker worker;
+  applicationStatus { APPLIED{} APPROVED{} OFFER{} ACCEPTED{} REJECTED{} };
+  Date applicationDate;
+  Time applicationTime;
+  int rank; // This is the preference number given by a TA/Grader for this job.
+}
+
+class Evaluation {
+  0..1 -> 1 Course course;
+  0..1 -> 1 Job job;
+  0..1 -> 1 Instructor evaluator;
+  0..1 -> 1 CourseWorker worker;
+  String description;
+}
+
+class User {
+  abstract;
+  String username;
+  String name;
+}
+
+class CourseWorker {
+  isA User;
+  0..1 -> 0..3 JobApplication jobApplications; // Maximum of 3 job applications.
+  0..1 -> * Evaluation evals;
+  academicStatus { UNDERGRADUATE{} GRADUATE{} };
+  settable int hoursOfWorkAllocated;
+  settable int mcgillID;
+  settable String pastWorkerExperience;
+}
+
+class DepartmentAdministrator {
+  isA User;
+}
+
+class Instructor {
+  isA User;
+}

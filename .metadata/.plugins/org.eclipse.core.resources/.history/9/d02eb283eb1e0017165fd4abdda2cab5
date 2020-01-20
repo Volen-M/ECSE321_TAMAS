@@ -1,0 +1,34 @@
+<?php
+require_once 'controller/Controller.php';
+
+session_start();
+
+$c = new Controller();
+try {
+	$Date = NULL;
+	if(isset($_POST['Date'])) {
+		$deadlineDate = ($_POST['Date']);
+	}
+	
+	$jobtitle = NULL;
+	if(isset($_POST['mainPageJobTitle'])) {
+		$deadlineTime = ($_POST['Time']);
+	}
+	
+	$description = NULL;
+	if(isset($_POST['jobpostingdescription'])) {
+		$description = $_POST['jobpostingdescription'];
+	}
+	
+	$c->createJobPosting($course, $jobtitle, $description);
+} catch (Exception $e) {
+	$errors = explode("@", $e->getMessage());
+}
+?>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="refresh" content="0; url=/TAMASWeb/mainpage.php" />
+	</head>
+</html>

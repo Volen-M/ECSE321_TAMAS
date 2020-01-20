@@ -1,0 +1,26 @@
+namespace ca.mcgill.ecse321.tamas.authentication;
+
+class Authentication {
+  0..1 <@>- * User users; // We will want to ensure in our controller that we have atleast 1 user - if not make a default admin user.
+  0..1 -> 0..1 User currentUser;
+}
+
+class User {
+  abstract;
+  String username; // We may plan to store hashed passwords locally in a file for each username in the system.
+  String password;
+  String name;
+}
+
+// Only need the bare minimum in the classes below to identify our user type.
+class CourseWorker {
+  isA User;
+}
+
+class DepartmentAdministrator {
+  isA User;
+}
+
+class Instructor {
+  isA User;
+}

@@ -1,0 +1,296 @@
+<?php
+require_once("java/sql/Date.php");
+require_once("java/sql/Time.php");
+require_once("java/util/Calendar.php");
+require_once("org/junit/After.php");
+require_once("org/junit/AfterClass.php");
+require_once("org/junit/Before.php");
+require_once("org/junit/BeforeClass.php");
+require_once("org/junit/Test.php");
+class TestModel {
+	protected $tamas;	// Tamas
+	abstract static function setUpBeforeClass (); 
+	abstract static function tearDownAfterClass (); 
+	public function setUp () 
+	{
+		$this->tamas = new Tamas();
+	}
+	public function tearDown () 
+	{
+		$this->tamas->delete();
+	}
+	public function testTamasAddCourse () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		if (($this->tamas->getCourses()->size() <= 0))
+		{
+			$this->fail("Failed to add a course to our Tamas Model instance.");
+		}
+	}
+	public function testTamasAddUser () 
+	{
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		if (($this->tamas->getUser(0) == NULL))
+		{
+			$this->fail("Failed to add a course worker user to our Tamas Model instance.");
+		}
+	}
+	public function testTamasAddOrMoveCourseAt () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->addCourse(new Course("test2", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->addOrMoveCourseAt($this->tamas->getCourse(1), 0);
+		if (!$this->tamas->getCourse(0)->getName()->equals("test2"))
+		{
+			$this->fail("Failed to add or move a course in our Tamas Model instance.");
+		}
+	}
+	public function testTamasAddOrMoveUserAt () 
+	{
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		$this->tamas->addUser(new CourseWorker("test2", "test", 0, 0, "test"));
+		$this->tamas->addOrMoveUserAt($this->tamas->getUser(1), 0);
+		if (!$this->tamas->getUser(0)->getUsername()->equals("test2"))
+		{
+			$this->fail("Failed to add or move a user in our Tamas Model instance.");
+		}
+	}
+	public function testCourseSetName () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setName("ECSE321"));
+		$this->assertEquals( TRUE , $FirstCourse->setName(""));
+		$this->assertEquals( TRUE , $FirstCourse->setName("1231-7"));
+	}
+	public function testCourseSetStudentsEnrolled () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setStudentsEnrolled(100));
+		$this->assertEquals( TRUE , $FirstCourse->setStudentsEnrolled(0));
+		$this->assertEquals( TRUE , $FirstCourse->setStudentsEnrolled(-100));
+	}
+	public function testCourseSetBudget () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setBudget(1000));
+		$this->assertEquals( TRUE , $FirstCourse->setBudget(0));
+		$this->assertEquals( TRUE , $FirstCourse->setBudget(-1000));
+	}
+	public function testCourseSetCredits () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setCredits(3));
+		$this->assertEquals( TRUE , $FirstCourse->setCredits(0));
+		$this->assertEquals( TRUE , $FirstCourse->setCredits(-3));
+	}
+	public function testCourseSetHours () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setHours(3));
+		$this->assertEquals( TRUE , $FirstCourse->setHours(0));
+		$this->assertEquals( TRUE , $FirstCourse->setHours(-1));
+	}
+	public function testCourseSetTutorialCount () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setTutorialCount(2));
+		$this->assertEquals( TRUE , $FirstCourse->setTutorialCount(0));
+		$this->assertEquals( TRUE , $FirstCourse->setTutorialCount(-1));
+	}
+	public function testCourseSetLabCount () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setLabCount(2));
+		$this->assertEquals( TRUE , $FirstCourse->setLabCount(0));
+		$this->assertEquals( TRUE , $FirstCourse->setLabCount(-1));
+	}
+	public function testCourseSetTamas () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals( TRUE , $FirstCourse->setTamas($this->tamas));
+	}
+	public function testCourseGetName () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals("ECSE321", $FirstCourse->getName());
+	}
+	public function testCourseGetBudget () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals(1000, $FirstCourse->getBudget(), 1);
+	}
+	public function testCourseGetCredits () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals(3, $FirstCourse->getCredits());
+	}
+	public function testCourseGetStudentsEnrolled () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals(100, $FirstCourse->getStudentsEnrolled());
+	}
+	public function testCourseGetTamas () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals($this->tamas, $FirstCourse->getTamas());
+	}
+	public function testCourseGetTutorialCount () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals(2, $FirstCourse->getTutorialCount());
+	}
+	public function testCourseGetLabCount () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$this->assertEquals(2, $FirstCourse->getLabCount());
+	}
+	public function testCourseAddOrMoveJobPostingAt () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$cal = $Calendar->getInstance();
+		$Cs = new CourseWorker("John", "guest01", 45, 111111111, "noexperience");
+		$TaJ = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$TaJ1 = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$TaJ2 = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$TaJ3 = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$FirstCourse->addJobPosting($TaJ);
+		$FirstCourse->addJobPosting($TaJ1);
+		$FirstCourse->addJobPosting($TaJ2);
+		$FirstCourse->addJobPosting($TaJ3);
+		$this->assertEquals( TRUE , $FirstCourse->addOrMoveJobPostingAt($TaJ, 3));
+		$this->assertEquals( TRUE , $FirstCourse->addOrMoveJobPostingAt($TaJ, 2));
+		$this->assertEquals( TRUE , $FirstCourse->addOrMoveJobPostingAt($TaJ, 1));
+		$this->assertEquals( TRUE , $FirstCourse->addOrMoveJobPostingAt($TaJ, -1));
+	}
+	public function testCourseHasJobPostings () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$cal = $Calendar->getInstance();
+		$Cs = new CourseWorker("John", "guest01", 45, 111111111, "noexperience");
+		$TaJ = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$FirstCourse->addJobPosting($TaJ);
+		$this->assertEquals( TRUE , $FirstCourse->hasJobPostings());
+	}
+	public function testCourseIndexOfJobPosting () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$cal = $Calendar->getInstance();
+		$Cs = new CourseWorker("John", "guest01", 45, 111111111, "noexperience");
+		$TaJ = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$FirstCourse->addJobPosting($TaJ);
+		$this->assertEquals(0, $FirstCourse->indexOfJobPosting($TaJ));
+	}
+	public function testCourseNumberOfJobPostings () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$cal = $Calendar->getInstance();
+		$Cs = new CourseWorker("John", "guest01", 45, 111111111, "noexperience");
+		$TaJ = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$FirstCourse->addJobPosting($TaJ);
+		$this->assertEquals(1, $FirstCourse->numberOfJobPostings());
+	}
+	public function testCourseRemoveJobPosting () 
+	{
+		$FirstCourse = new Course("ECSE321", 1000, 100, 3, 3, 2, 2, $this->tamas);
+		$cal = $Calendar->getInstance();
+		$Cs = new CourseWorker("John", "guest01", 45, 111111111, "noexperience");
+		$TaJ = new Job(new Time($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), new Date($cal->getTimeInMillis()), new Time($cal->getTimeInMillis()), "TAforECSE321", "Give tutorials for ECSE321", $FirstCourse);
+		$FirstCourse->addJobPosting($TaJ);
+		$TaJ->delete();
+		$this->assertEquals( FALSE , $FirstCourse->hasJobPostings());
+	}
+	public function testCourseToString () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		if (($this->tamas->getCourse(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to get the a serialized string of the course at the first index within our Tamas Model instance.");
+		}
+	}
+	public function testCourseWorkerToString () 
+	{
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		if (($this->tamas->getUser(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to get the a serialized string of the user at the first index within our Tamas Model instance.");
+		}
+	}
+	public function testCourseWorkerAddOrMoveEvalAt () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		$this->tamas->addUser(new Instructor("test", "test"));
+		($this->tamas->getUser(0))->addEval(new Evaluation("test", $this->tamas->getCourse(0), $this->tamas->getCourse(0)->getJobPosting(0), $this->tamas->getUser(1), $this->tamas->getUser(0)));
+		($this->tamas->getUser(0))->addEval(new Evaluation("test2", $this->tamas->getCourse(0), $this->tamas->getCourse(0)->getJobPosting(0), $this->tamas->getUser(1), $this->tamas->getUser(0)));
+		($this->tamas->getUser(0))->addOrMoveEvalAt(($this->tamas->getUser(0))->getEval(1), 0);
+		if (!($this->tamas->getUser(0))->getEval(0)->getDescription()->equals("test2"))
+		{
+			$this->fail("Failed to add or move a course evaluation for a test course worker.");
+		}
+	}
+	public function testCourseWorkerSetJobApplications () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		($this->tamas->getUser(0))->setJobApplications(new JobApplication(new Date(1), new Time(2), 0, $this->tamas->getUser(0), $this->tamas->getCourse(0)->getJobPosting(0)));
+		if ((($this->tamas->getUser(0))->getJobApplications()->size() <= 0))
+		{
+			$this->fail("Failed to set the job applications on a test course worker in our Tamas Model instance.");
+		}
+	}
+	public function testEvaluationToString () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		$this->tamas->addUser(new Instructor("test", "test"));
+		($this->tamas->getUser(0))->addEval(new Evaluation("test", $this->tamas->getCourse(0), $this->tamas->getCourse(0)->getJobPosting(0), $this->tamas->getUser(1), $this->tamas->getUser(0)));
+		if ((($this->tamas->getUser(0))->getEval(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to add and get the serialized string representation of an evaluation object.");
+		}
+	}
+	public function testJobApplicationToString () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		($this->tamas->getUser(0))->setJobApplications(new JobApplication(new Date(1), new Time(2), 0, $this->tamas->getUser(0), $this->tamas->getCourse(0)->getJobPosting(0)), new JobApplication(new Date(1), new Time(2), 0, $this->tamas->getUser(0), $this->tamas->getCourse(0)->getJobPosting(0)));
+		if ((($this->tamas->getUser(0))->getJobApplication(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to get the a serialized string of the job application at the first index within our Tamas Model instance.");
+		}
+	}
+	public function testCourseWorkerAddOrMoveJobApplicationAt () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		$this->tamas->addUser(new CourseWorker("test", "test", 0, 0, "test"));
+		($this->tamas->getUser(0))->setJobApplications(new JobApplication(new Date(1), new Time(2), 0, $this->tamas->getUser(0), $this->tamas->getCourse(0)->getJobPosting(0)), new JobApplication(new Date(1), new Time(2), 0, $this->tamas->getUser(0), $this->tamas->getCourse(0)->getJobPosting(0)));
+		if (!($this->tamas->getUser(0))->addOrMoveJobApplicationAt(($this->tamas->getUser(0))->getJobApplication(0), 1))
+		{
+			$this->fail("Failed to add or move a job application at the first index in our Tamas Model instance.");
+		}
+	}
+	public function testCourseAddJob () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		if (($this->tamas->getCourse(0)->getJobPosting(0) == NULL))
+		{
+			$this->fail("Failed to add a job posting to a test course in our Tamas Model instance.");
+		}
+	}
+	public function testCourseJobToString () 
+	{
+		$this->tamas->addCourse(new Course("test", 1, 1, 1, 1, 1, 1, $this->tamas));
+		$this->tamas->getCourse(0)->addJobPosting(new Job(new Time(1), new Time(2), new Date(1), new Time(3), "test", "test", $this->tamas->getCourse(0)));
+		if (($this->tamas->getCourse(0)->getJobPosting(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to get the a serialized string of the job at the first index within our Tamas Model instance.");
+		}
+	}
+}
+?>

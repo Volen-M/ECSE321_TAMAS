@@ -1,0 +1,89 @@
+<?php
+require_once("org/junit/Assert/fail.php");
+require_once("org/junit/After.php");
+require_once("org/junit/AfterClass.php");
+require_once("org/junit/Before.php");
+require_once("org/junit/BeforeClass.php");
+require_once("org/junit/Test.php");
+class TestAuthentication {
+	protected $authentication;	// Authentication
+	abstract static function setUpBeforeClass (); 
+	abstract static function tearDownAfterClass (); 
+	public function setUp () 
+	{
+		$this->authentication = new Authentication();
+	}
+	public function tearDown () 
+	{
+		$this->authentication->delete();
+	}
+	public function testAuthenticationAddUser () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (!$this->authentication->hasUsers())
+		{
+			$this->fail("Failed to add a test user to our Authentication instance.");
+		}
+	}
+	public function testAuthenticationAddUserAt () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		$this->authentication->addUserAt(new CourseWorker("test", "test", "test"), 1);
+		if (!($this->authentication->getUser(1) instanceof CourseWorker))
+		{
+			$this->fail("Failed to add a test course worker to our desired index.");
+		}
+	}
+	public function testAuthenticationAddOrMoveUserAt () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		$this->authentication->addOrMoveUserAt($this->authentication->getUser(0), ($this->authentication->numberOfUsers() - 1));
+		if (!($this->authentication->getUsers()->get(($this->authentication->numberOfUsers() - 1)) instanceof DepartmentAdministrator))
+		{
+			$this->fail("Failed to add or move a test department administrator to our desired index.");
+		}
+	}
+	public function testAuthenticationGetUser () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (!($this->authentication->getUser(0) instanceof DepartmentAdministrator))
+		{
+			$this->fail("Failed to get the user at the desired index within our authentication instance.");
+		}
+	}
+	public function testAuthenticationUserToString () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (($this->authentication->getUser(0)->toString()->length() <= 0))
+		{
+			$this->fail("Failed to get the a serialized string of the user at the first index within our authentication instance.");
+		}
+	}
+	public function testAuthenticationGetUsers () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (($this->authentication->getUsers()->size() <= 0))
+		{
+			$this->fail("Failed to get the users within our authentication instance.");
+		}
+	}
+	public function testAuthenticationSetCurrentUser () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (!$this->authentication->setCurrentUser($this->authentication->getUser(0)))
+		{
+			$this->fail("Failed to set the current user within our authentication instance.");
+		}
+	}
+	public function testAuthenticationRemoveUser () 
+	{
+		$this->authentication->addUser(new DepartmentAdministrator("test", "test", "test"));
+		if (!$this->authentication->removeUser($this->authentication->getUser(0)))
+		{
+			$this->fail("Failed to remove a user within our authentication instance.");
+		}
+	}
+}
+?>

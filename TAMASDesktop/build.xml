@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Caspar Cedro - 260669352 -->
+<project basedir="." name="Computation" default="init">
+    <property name="builddir" value="bin"/>
+    <property name="libdir" value="lib"/>
+    <property name="testdir" value="test"/>
+    <property name="testreportsdir" value="coverage-report/ant-test"/>
+    <!-- manually copy dependency jar files into the lib folder in project and add here -->
+    <path id="tamas.desktop.classpath">
+        <fileset dir="${libdir}">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement path="${builddir}"/>
+    </path>
+
+    <!-- All targets were written manually by me -->
+    <target name="init">
+        <mkdir dir="${builddir}"/>
+        <mkdir dir="${testreportsdir}"/>
+    </target>
+
+    <!-- All targets were written manually by me -->
+    <target depends="init" name="build">
+        <javac target="1.7" source="1.7" includeantruntime="false" destdir="${builddir}">
+            <src path="src"/>
+            <src path="src-coverage-exclude"/>
+            <src path="test"/>
+            <classpath refid="tamas.desktop.classpath"/>
+        </javac>
+    </target>
+
+    <!-- All targets were written manually by me -->
+    <target depends="init, build" name="exportjar">
+        <manifestclasspath property="lib.list" jarfile="bin/TAMASDesktop.jar">
+            <classpath refid="tamas.desktop.classpath"/>
+        </manifestclasspath>
+        <jar destfile="bin/TAMASDesktop.jar">
+            <manifest>
+                <attribute name="Main-Class" value="ca.mcgill.ecse321.tamas.application.TamasApplicationStartup"/>
+                <attribute name="Class-Path" value="${lib.list}"/>
+            </manifest>
+            <fileset dir="${builddir}">
+                <include name="**/*.class"/>
+                <exclude name="**/*Test*.class"/>
+            </fileset>
+            <fileset dir=".">
+                <include name="**/lib/*.*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <!-- All targets were written manually by me -->
+    <target depends="init, build" name="test">
+        <junit printsummary="on" haltonfailure="yes" fork="yes">
+            <classpath refid="tamas.desktop.classpath"/>
+            <formatter type="xml"/>
+            <batchtest todir="${testreportsdir}">
+                <fileset dir="${testdir}">
+                    <include name="**/*Test*.java"/>
+                    <exclude name="**/AllTests.java"/>
+                </fileset>
+	    </batchtest>
+        </junit>
+    </target>
+
+    <!-- All targets were written manually by me -->
+    <target depends="init, build" name="cleaneverything">
+        <delete dir="${builddir}"/>
+        <delete dir="${testreportsdir}"/>
+    </target>
+
+    <!-- All targets were written manually by me -->
+    <target depends="init, build, exportjar" name="Computation">
+        <java jar="bin/Computation.jar" fork="true"/>
+    </target>
+</project>

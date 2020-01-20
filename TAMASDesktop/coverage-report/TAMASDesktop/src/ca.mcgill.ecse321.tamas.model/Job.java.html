@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Job.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">Job.java</span></div><h1>Job.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/*PLEASE DO NOT EDIT THIS CODE*/</span>
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+import java.sql.Time;
+import java.sql.Date;
+import java.util.*;
+
+// line 19 &quot;../../../../../Model.ump&quot;
+public class Job
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Job Attributes
+  private Time startTime;
+  private Time endTime;
+  private Date deadlineDate;
+  private Time deadlineTime;
+  private String title;
+  private String description;
+
+  //Job State Machines
+<span class="fc" id="L26">  public enum Day { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }</span>
+  private Day day;
+<span class="fc" id="L28">  public enum Type { TUTORIAL, LAB, GRADER }</span>
+  private Type type;
+
+  //Job Associations
+  private List&lt;JobApplication&gt; jobApplications;
+  private CourseWorker allocatedWorker;
+  private Course course;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L40">  public Job(Time aStartTime, Time aEndTime, Date aDeadlineDate, Time aDeadlineTime, String aTitle, String aDescription, Course aCourse, Day aDay, Type aType)</span>
+  {
+<span class="fc" id="L42">    startTime = aStartTime;</span>
+<span class="fc" id="L43">    endTime = aEndTime;</span>
+<span class="fc" id="L44">    deadlineDate = aDeadlineDate;</span>
+<span class="fc" id="L45">    deadlineTime = aDeadlineTime;</span>
+<span class="fc" id="L46">    title = aTitle;</span>
+<span class="fc" id="L47">    description = aDescription;</span>
+<span class="fc" id="L48">    day = aDay;</span>
+<span class="fc" id="L49">    type = aType;</span>
+<span class="fc" id="L50">    jobApplications = new ArrayList&lt;JobApplication&gt;();</span>
+<span class="fc" id="L51">    boolean didAddCourse = setCourse(aCourse);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if (!didAddCourse)</span>
+    {
+<span class="nc" id="L54">      throw new RuntimeException(&quot;Unable to create jobPosting due to course&quot;);</span>
+    }
+    
+<span class="fc" id="L57">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setStartTime(Time aStartTime)
+  {
+<span class="nc" id="L65">    boolean wasSet = false;</span>
+<span class="nc" id="L66">    startTime = aStartTime;</span>
+<span class="nc" id="L67">    wasSet = true;</span>
+<span class="nc" id="L68">    return wasSet;</span>
+  }
+
+  public boolean setEndTime(Time aEndTime)
+  {
+<span class="nc" id="L73">    boolean wasSet = false;</span>
+<span class="nc" id="L74">    endTime = aEndTime;</span>
+<span class="nc" id="L75">    wasSet = true;</span>
+<span class="nc" id="L76">    return wasSet;</span>
+  }
+
+  public boolean setDeadlineDate(Date aDeadlineDate)
+  {
+<span class="nc" id="L81">    boolean wasSet = false;</span>
+<span class="nc" id="L82">    deadlineDate = aDeadlineDate;</span>
+<span class="nc" id="L83">    wasSet = true;</span>
+<span class="nc" id="L84">    return wasSet;</span>
+  }
+
+  public boolean setDeadlineTime(Time aDeadlineTime)
+  {
+<span class="nc" id="L89">    boolean wasSet = false;</span>
+<span class="nc" id="L90">    deadlineTime = aDeadlineTime;</span>
+<span class="nc" id="L91">    wasSet = true;</span>
+<span class="nc" id="L92">    return wasSet;</span>
+  }
+
+  public boolean setTitle(String aTitle)
+  {
+<span class="nc" id="L97">    boolean wasSet = false;</span>
+<span class="nc" id="L98">    title = aTitle;</span>
+<span class="nc" id="L99">    wasSet = true;</span>
+<span class="nc" id="L100">    return wasSet;</span>
+  }
+
+  public boolean setDescription(String aDescription)
+  {
+<span class="nc" id="L105">    boolean wasSet = false;</span>
+<span class="nc" id="L106">    description = aDescription;</span>
+<span class="nc" id="L107">    wasSet = true;</span>
+<span class="nc" id="L108">    return wasSet;</span>
+  }
+
+  /**
+   * This enumeration decides how we expose the number of hours.
+   */
+  public Time getStartTime()
+  {
+<span class="fc" id="L116">    return startTime;</span>
+  }
+
+  public Time getEndTime()
+  {
+<span class="fc" id="L121">    return endTime;</span>
+  }
+
+  public Date getDeadlineDate()
+  {
+<span class="fc" id="L126">    return deadlineDate;</span>
+  }
+
+  public Time getDeadlineTime()
+  {
+<span class="fc" id="L131">    return deadlineTime;</span>
+  }
+
+  public String getTitle()
+  {
+<span class="fc" id="L136">    return title;</span>
+  }
+
+  public String getDescription()
+  {
+<span class="fc" id="L141">    return description;</span>
+  }
+
+  public String getDayFullName()
+  {
+<span class="nc" id="L146">    String answer = day.toString();</span>
+<span class="nc" id="L147">    return answer;</span>
+  }
+
+  public String getTypeFullName()
+  {
+<span class="nc" id="L152">    String answer = type.toString();</span>
+<span class="nc" id="L153">    return answer;</span>
+  }
+
+  public Day getDay()
+  {
+<span class="nc" id="L158">    return day;</span>
+  }
+
+  public Type getType()
+  {
+<span class="nc" id="L163">    return type;</span>
+  }
+
+  public boolean setDay(Day aDay)
+  {
+<span class="nc" id="L168">    day = aDay;</span>
+<span class="nc" id="L169">    return true;</span>
+  }
+
+  public boolean setType(Type aType)
+  {
+<span class="nc" id="L174">    type = aType;</span>
+<span class="nc" id="L175">    return true;</span>
+  }
+
+  public JobApplication getJobApplication(int index)
+  {
+<span class="nc" id="L180">    JobApplication aJobApplication = jobApplications.get(index);</span>
+<span class="nc" id="L181">    return aJobApplication;</span>
+  }
+
+  public List&lt;JobApplication&gt; getJobApplications()
+  {
+<span class="fc" id="L186">    List&lt;JobApplication&gt; newJobApplications = Collections.unmodifiableList(jobApplications);</span>
+<span class="fc" id="L187">    return newJobApplications;</span>
+  }
+
+  public int numberOfJobApplications()
+  {
+<span class="nc" id="L192">    int number = jobApplications.size();</span>
+<span class="nc" id="L193">    return number;</span>
+  }
+
+  public boolean hasJobApplications()
+  {
+<span class="nc bnc" id="L198" title="All 2 branches missed.">    boolean has = jobApplications.size() &gt; 0;</span>
+<span class="nc" id="L199">    return has;</span>
+  }
+
+  public int indexOfJobApplication(JobApplication aJobApplication)
+  {
+<span class="nc" id="L204">    int index = jobApplications.indexOf(aJobApplication);</span>
+<span class="nc" id="L205">    return index;</span>
+  }
+
+  public CourseWorker getAllocatedWorker()
+  {
+<span class="fc" id="L210">    return allocatedWorker;</span>
+  }
+
+  public boolean hasAllocatedWorker()
+  {
+<span class="nc bnc" id="L215" title="All 2 branches missed.">    boolean has = allocatedWorker != null;</span>
+<span class="nc" id="L216">    return has;</span>
+  }
+
+  public Course getCourse()
+  {
+<span class="fc" id="L221">    return course;</span>
+  }
+
+  public static int minimumNumberOfJobApplications()
+  {
+<span class="nc" id="L226">    return 0;</span>
+  }
+
+  public JobApplication addJobApplication(Date aApplicationDate, Time aApplicationTime, int aRank, CourseWorker aWorker)
+  {
+<span class="fc" id="L231">    return new JobApplication(aApplicationDate, aApplicationTime, aRank, aWorker, this);</span>
+  }
+
+  public boolean addJobApplication(JobApplication aJobApplication)
+  {
+<span class="fc" id="L236">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">    if (jobApplications.contains(aJobApplication)) { return false; }</span>
+<span class="fc" id="L238">    Job existingJob = aJobApplication.getJob();</span>
+<span class="pc bpc" id="L239" title="2 of 4 branches missed.">    boolean isNewJob = existingJob != null &amp;&amp; !this.equals(existingJob);</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">    if (isNewJob)</span>
+    {
+<span class="nc" id="L242">      aJobApplication.setJob(this);</span>
+<span class="nc" id="L243">    }</span>
+    else
+    {
+<span class="fc" id="L246">      jobApplications.add(aJobApplication);</span>
+    }
+<span class="fc" id="L248">    wasAdded = true;</span>
+<span class="fc" id="L249">    return wasAdded;</span>
+  }
+
+  public boolean removeJobApplication(JobApplication aJobApplication)
+  {
+<span class="fc" id="L254">    boolean wasRemoved = false;</span>
+    //Unable to remove aJobApplication, as it must always have a job
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">    if (!this.equals(aJobApplication.getJob()))</span>
+    {
+<span class="fc" id="L258">      jobApplications.remove(aJobApplication);</span>
+<span class="fc" id="L259">      wasRemoved = true;</span>
+    }
+<span class="fc" id="L261">    return wasRemoved;</span>
+  }
+
+  public boolean addJobApplicationAt(JobApplication aJobApplication, int index)
+  {  
+<span class="nc" id="L266">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">    if(addJobApplication(aJobApplication))</span>
+    {
+<span class="nc bnc" id="L269" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">      if(index &gt; numberOfJobApplications()) { index = numberOfJobApplications() - 1; }</span>
+<span class="nc" id="L271">      jobApplications.remove(aJobApplication);</span>
+<span class="nc" id="L272">      jobApplications.add(index, aJobApplication);</span>
+<span class="nc" id="L273">      wasAdded = true;</span>
+    }
+<span class="nc" id="L275">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveJobApplicationAt(JobApplication aJobApplication, int index)
+  {
+<span class="nc" id="L280">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">    if(jobApplications.contains(aJobApplication))</span>
+    {
+<span class="nc bnc" id="L283" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">      if(index &gt; numberOfJobApplications()) { index = numberOfJobApplications() - 1; }</span>
+<span class="nc" id="L285">      jobApplications.remove(aJobApplication);</span>
+<span class="nc" id="L286">      jobApplications.add(index, aJobApplication);</span>
+<span class="nc" id="L287">      wasAdded = true;</span>
+<span class="nc" id="L288">    } </span>
+    else 
+    {
+<span class="nc" id="L291">      wasAdded = addJobApplicationAt(aJobApplication, index);</span>
+    }
+<span class="nc" id="L293">    return wasAdded;</span>
+  }
+
+  public boolean setAllocatedWorker(CourseWorker aNewAllocatedWorker)
+  {
+<span class="fc" id="L298">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">    if (aNewAllocatedWorker == null)</span>
+    {
+<span class="nc" id="L301">      CourseWorker existingAllocatedWorker = allocatedWorker;</span>
+<span class="nc" id="L302">      allocatedWorker = null;</span>
+      
+<span class="nc bnc" id="L304" title="All 4 branches missed.">      if (existingAllocatedWorker != null &amp;&amp; existingAllocatedWorker.getJob() != null)</span>
+      {
+<span class="nc" id="L306">        existingAllocatedWorker.setJob(null);</span>
+      }
+<span class="nc" id="L308">      wasSet = true;</span>
+<span class="nc" id="L309">      return wasSet;</span>
+    }
+
+<span class="fc" id="L312">    CourseWorker currentAllocatedWorker = getAllocatedWorker();</span>
+<span class="pc bpc" id="L313" title="3 of 4 branches missed.">    if (currentAllocatedWorker != null &amp;&amp; !currentAllocatedWorker.equals(aNewAllocatedWorker))</span>
+    {
+<span class="nc" id="L315">      currentAllocatedWorker.setJob(null);</span>
+    }
+
+<span class="fc" id="L318">    allocatedWorker = aNewAllocatedWorker;</span>
+<span class="fc" id="L319">    Job existingJob = aNewAllocatedWorker.getJob();</span>
+
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">    if (!equals(existingJob))</span>
+    {
+<span class="fc" id="L323">      aNewAllocatedWorker.setJob(this);</span>
+    }
+<span class="fc" id="L325">    wasSet = true;</span>
+<span class="fc" id="L326">    return wasSet;</span>
+  }
+
+  public boolean setCourse(Course aCourse)
+  {
+<span class="fc" id="L331">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">    if (aCourse == null)</span>
+    {
+<span class="nc" id="L334">      return wasSet;</span>
+    }
+
+<span class="fc" id="L337">    Course existingCourse = course;</span>
+<span class="fc" id="L338">    course = aCourse;</span>
+<span class="pc bpc" id="L339" title="3 of 4 branches missed.">    if (existingCourse != null &amp;&amp; !existingCourse.equals(aCourse))</span>
+    {
+<span class="nc" id="L341">      existingCourse.removeJobPosting(this);</span>
+    }
+<span class="fc" id="L343">    course.addJobPosting(this);</span>
+<span class="fc" id="L344">    wasSet = true;</span>
+<span class="fc" id="L345">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="fc bfc" id="L350" title="All 2 branches covered.">    while (jobApplications.size() &gt; 0)</span>
+    {
+<span class="fc" id="L352">      JobApplication aJobApplication = jobApplications.get(jobApplications.size() - 1);</span>
+<span class="fc" id="L353">      aJobApplication.delete();</span>
+<span class="fc" id="L354">      jobApplications.remove(aJobApplication);</span>
+    }
+    
+<span class="fc" id="L357">    CourseWorker existingAllocatedWorker = allocatedWorker;</span>
+<span class="fc" id="L358">    allocatedWorker = null;</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">    if (existingAllocatedWorker != null)</span>
+    {
+<span class="nc" id="L361">      existingAllocatedWorker.delete();</span>
+<span class="nc" id="L362">      existingAllocatedWorker.setJob(null);</span>
+    }
+<span class="fc" id="L364">    Course placeholderCourse = course;</span>
+<span class="fc" id="L365">    this.course = null;</span>
+<span class="fc" id="L366">    placeholderCourse.removeJobPosting(this);</span>
+<span class="fc" id="L367">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L372">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L373">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L374">            &quot;title&quot; + &quot;:&quot; + getTitle()+ &quot;,&quot; +</span>
+<span class="fc" id="L375">            &quot;description&quot; + &quot;:&quot; + getDescription()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L376" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;startTime&quot; + &quot;=&quot; + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L377" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;endTime&quot; + &quot;=&quot; + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L378" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;deadlineDate&quot; + &quot;=&quot; + (getDeadlineDate() != null ? !getDeadlineDate().equals(this)  ? getDeadlineDate().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L379" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;deadlineTime&quot; + &quot;=&quot; + (getDeadlineTime() != null ? !getDeadlineTime().equals(this)  ? getDeadlineTime().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;allocatedWorker = &quot;+(getAllocatedWorker()!=null?Integer.toHexString(System.identityHashCode(getAllocatedWorker())):&quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;course = &quot;+(getCourse()!=null?Integer.toHexString(System.identityHashCode(getCourse())):&quot;null&quot;)</span>
+<span class="fc" id="L382">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

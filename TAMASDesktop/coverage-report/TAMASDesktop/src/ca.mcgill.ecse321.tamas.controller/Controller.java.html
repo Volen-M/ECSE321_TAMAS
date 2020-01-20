@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.controller</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.tamas.controller;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.mcgill.ecse321.tamas.authentication.Authentication;
+import ca.mcgill.ecse321.tamas.model.Course;
+import ca.mcgill.ecse321.tamas.model.CourseWorker.AcademicStatus;
+import ca.mcgill.ecse321.tamas.model.Evaluation;
+import ca.mcgill.ecse321.tamas.model.Job;
+import ca.mcgill.ecse321.tamas.model.Job.Day;
+import ca.mcgill.ecse321.tamas.model.Job.Type;
+import ca.mcgill.ecse321.tamas.model.JobApplication;
+import ca.mcgill.ecse321.tamas.model.Tamas;
+import ca.mcgill.ecse321.tamas.model.User;
+import ca.mcgill.ecse321.tamas.persistence.Persistence;
+
+<span class="nc" id="L20">public class Controller {</span>
+	private static Tamas tamas;
+	private static Authentication authentication;
+
+	public static boolean loadAuthentication() {
+		try {
+<span class="fc" id="L26">			authentication = Persistence.loadAuthenticationFromXMLwithXStream(&quot;users.xml&quot;);</span>
+<span class="fc" id="L27">			return true;</span>
+<span class="nc" id="L28">		} catch (Exception e) {</span>
+<span class="nc" id="L29">			e.printStackTrace();</span>
+<span class="nc" id="L30">			authentication = new Authentication();</span>
+			// false implies that we could not load an existing Authentication
+			// instance and are proceeding with a new empty one.
+<span class="nc" id="L33">			return false;</span>
+		}
+	}
+
+	public static void saveAuthentication() {
+<span class="fc" id="L38">		Persistence.saveAuthenticationToXMLwithXStream(authentication, &quot;users.xml&quot;);</span>
+<span class="fc" id="L39">	}</span>
+
+	public static boolean loadModel() {
+		try {
+<span class="fc" id="L43">			tamas = Persistence.loadModelFromXMLwithXStream(&quot;data.xml&quot;);</span>
+<span class="fc" id="L44">			return true;</span>
+<span class="nc" id="L45">		} catch (Exception e) {</span>
+<span class="nc" id="L46">			e.printStackTrace();</span>
+<span class="nc" id="L47">			tamas = new Tamas();</span>
+			// false implies that we could not load an existing Model instance
+			// and are proceeding with a new empty one.
+<span class="nc" id="L50">			return false;</span>
+		}
+	}
+
+	public static void saveModel() {
+<span class="fc" id="L55">		Persistence.saveModelToXMLwithXStream(tamas, &quot;data.xml&quot;);</span>
+<span class="fc" id="L56">	}</span>
+
+	public static List&lt;ca.mcgill.ecse321.tamas.authentication.User&gt; getAuthenticationUsers() {
+<span class="fc" id="L59">		return authentication.getUsers();</span>
+	}
+
+	public static List&lt;ca.mcgill.ecse321.tamas.model.User&gt; getModelUsers() {
+<span class="fc" id="L63">		return tamas.getUsers();</span>
+	}
+
+	public static List&lt;Course&gt; getCourseList() {
+<span class="fc" id="L67">		return tamas.getCourses();</span>
+	}
+
+	public static List&lt;Job&gt; getCourseJobPostings(Course course) {
+<span class="fc" id="L71">		return course.getJobPostings();</span>
+	}
+
+	public static List&lt;JobApplication&gt; getCourseWorkerJobApplications(String username) throws InvalidInputException {
+<span class="nc" id="L75">		ca.mcgill.ecse321.tamas.model.CourseWorker worker = null;</span>
+<span class="nc" id="L76">		List&lt;User&gt; users = getModelUsers();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (ca.mcgill.ecse321.tamas.model.User user : users) {</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">			if (user.getUsername().equals(username) &amp;&amp; user instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="nc" id="L79">				worker = (ca.mcgill.ecse321.tamas.model.CourseWorker) user;</span>
+			}
+		}
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		if (worker.equals(null)) {</span>
+<span class="nc" id="L83">			throw new InvalidInputException(&quot;Failed to get courseworker for username.&quot;);</span>
+		}
+<span class="nc" id="L85">		return worker.getJobApplications();</span>
+	}
+
+	public static List&lt;Evaluation&gt; getCourseWorkerEvaluations(String username) throws InvalidInputException {
+<span class="nc" id="L89">		ca.mcgill.ecse321.tamas.model.CourseWorker worker = null;</span>
+<span class="nc" id="L90">		List&lt;User&gt; users = getModelUsers();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		for (ca.mcgill.ecse321.tamas.model.User user : users) {</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">			if (user.getUsername().equals(username) &amp;&amp; user instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="nc" id="L93">				worker = (ca.mcgill.ecse321.tamas.model.CourseWorker) user;</span>
+			}
+		}
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (worker.equals(null)) {</span>
+<span class="nc" id="L97">			throw new InvalidInputException(&quot;Failed to get courseworker for username.&quot;);</span>
+		}
+<span class="nc" id="L99">		return worker.getEvals();</span>
+	}
+
+	public static ca.mcgill.ecse321.tamas.authentication.User verifyAuthenticationCredentials(String username,
+			String password) {
+<span class="fc" id="L104">		List&lt;ca.mcgill.ecse321.tamas.authentication.User&gt; users = getAuthenticationUsers();</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">		for (ca.mcgill.ecse321.tamas.authentication.User user : users) {</span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">			if (user.getUsername().equals(username) &amp;&amp; user.getPassword().equals(password)) {</span>
+<span class="fc" id="L107">				return user;</span>
+			}
+		}
+<span class="nc" id="L110">		return null;</span>
+	}
+
+	public static void registerNewUser(String username, String password, String repeatedPassword, String name,
+			int mcgillID) throws Exception {
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">		if (password.equals(repeatedPassword)) {</span>
+<span class="fc" id="L116">			List&lt;ca.mcgill.ecse321.tamas.authentication.User&gt; authUsers = getAuthenticationUsers();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			for (ca.mcgill.ecse321.tamas.authentication.User user : authUsers) {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">				if (user.getUsername().equals(username)) {</span>
+<span class="nc" id="L119">					throw new Exception(&quot;Username already exists.&quot;);</span>
+				}
+			}
+<span class="fc" id="L122">			List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">			for (ca.mcgill.ecse321.tamas.model.User user : modelUsers) {</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">				if (user.getUsername().equals(username)) {</span>
+<span class="nc" id="L125">					throw new Exception(&quot;Username already exists.&quot;);</span>
+				}
+			}
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">			if (authUsers.size() != modelUsers.size()) {</span>
+<span class="nc" id="L129">				throw new Exception(&quot;Either data.xml or users.xml is corrupt.&quot;);</span>
+			} else {
+<span class="pc bpc" id="L131" title="1 of 4 branches missed.">				if (authentication.hasUsers() &amp;&amp; tamas.hasUsers()) {</span>
+<span class="fc" id="L132">					authentication</span>
+<span class="fc" id="L133">					.addUser(new ca.mcgill.ecse321.tamas.authentication.CourseWorker(username, password, name));</span>
+<span class="fc" id="L134">					tamas.addUser(new ca.mcgill.ecse321.tamas.model.CourseWorker(username, name, 0, mcgillID, &quot;&quot;));</span>
+<span class="fc" id="L135">				} else {</span>
+					// First user registered must be a department administrator.
+<span class="fc" id="L137">					authentication.addUser(new ca.mcgill.ecse321.tamas.authentication.DepartmentAdministrator(username,</span>
+<span class="fc" id="L138">							password, name));</span>
+<span class="fc" id="L139">					tamas.addUser(new ca.mcgill.ecse321.tamas.model.DepartmentAdministrator(username, name));</span>
+				}
+<span class="fc" id="L141">				saveAuthentication();</span>
+<span class="fc" id="L142">				saveModel();</span>
+			}
+<span class="fc" id="L144">		} else {</span>
+<span class="nc" id="L145">			throw new Exception(&quot;The password is not equivalent to the repeated password string.&quot;);</span>
+		}
+<span class="fc" id="L147">	}</span>
+
+	public static void changeUserPassword(String username, String newPassword, String newPasswordRepeated)
+			throws Exception {
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (newPassword.equals(newPasswordRepeated)) {</span>
+<span class="fc" id="L152">			List&lt;ca.mcgill.ecse321.tamas.authentication.User&gt; authUsers = getAuthenticationUsers();</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">			for (int i = 0; i &lt; authUsers.size(); i++) {</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">				if (authUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L155">					authUsers.get(i).setPassword(newPassword);</span>
+<span class="fc" id="L156">					saveAuthentication();</span>
+<span class="fc" id="L157">					return;</span>
+				}
+			}
+<span class="nc" id="L160">		} else {</span>
+<span class="nc" id="L161">			throw new Exception(&quot;The password is not equivalent to the repeated password string.&quot;);</span>
+		}
+<span class="nc" id="L163">	}</span>
+
+	public static void addNewCourse(String name, double budget, int studentsEnrolled, int credits, int hours,
+			int tutorialCount, int labCount) throws InvalidInputException {
+<span class="fc" id="L167">		boolean exists = false;</span>
+<span class="fc" id="L168">		List&lt;Course&gt; courses = Controller.getCourseList();</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">		for (Course course: courses){</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			if (name.equals(course.getName())){</span>
+<span class="nc" id="L171">				exists = true;</span>
+<span class="nc" id="L172">				break;</span>
+			}
+		}
+		
+<span class="pc bpc" id="L176" title="6 of 12 branches missed.">		if (name.length() &gt; 0 &amp;&amp; budget &gt; 0.0d &amp;&amp; studentsEnrolled &gt; 0 &amp;&amp; credits &gt; 0 &amp;&amp; hours &gt; 0 &amp;&amp; tutorialCount &gt;= 0</span>
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">				&amp;&amp; labCount &gt;= 0 &amp;&amp; !(exists)) {</span>
+<span class="fc" id="L178">			tamas.addCourse(name, budget, studentsEnrolled, credits, hours, tutorialCount, labCount);</span>
+<span class="fc" id="L179">			saveModel();</span>
+<span class="fc" id="L180">		} else {</span>
+<span class="nc" id="L181">			throw new InvalidInputException(&quot;A parameter has a bad value.&quot;);</span>
+		}
+<span class="fc" id="L183">	}</span>
+
+	public static void removeCourse(Course course) throws InvalidInputException {
+<span class="fc" id="L186">		List&lt;Course&gt; courses = getCourseList();</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">		for (int i = 0; i &lt; courses.size(); i++) {</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">			if (courses.get(i).equals(course)) {</span>
+<span class="fc" id="L189">				courses.get(i).delete();</span>
+<span class="fc" id="L190">				saveModel();</span>
+<span class="fc" id="L191">				return;</span>
+<span class="nc bnc" id="L192" title="All 4 branches missed.">			} else if ((i == courses.size() - 1) &amp;&amp; !courses.get(i).equals(course)) {</span>
+<span class="nc" id="L193">				throw new InvalidInputException(&quot;Could not remove course.&quot;);</span>
+			}
+		}
+<span class="nc" id="L196">	}</span>
+
+	public static void addCourseJob(String title, String description, Course course, Day day, Type type, Time startTime,
+			Time endTime, Date deadlineDate, Time deadlineTime) throws InvalidInputException {
+<span class="fc" id="L200">		boolean exists = false;</span>
+<span class="fc" id="L201">		List&lt;Job&gt; jobs = Controller.getCourseJobPostings(course);</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		for (Job job: jobs){</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">			if (title.equals(job.getTitle())){</span>
+<span class="nc" id="L204">				exists = true;</span>
+<span class="nc" id="L205">				break;</span>
+			}
+		}
+			
+<span class="pc bpc" id="L209" title="4 of 8 branches missed.">		if (title.length() &gt; 0 &amp;&amp; description.length() &gt; 0 &amp;&amp; !course.equals(null) &amp;&amp; !day.equals(null)</span>
+<span class="pc bpc" id="L210" title="4 of 8 branches missed.">				&amp;&amp; !type.equals(null) &amp;&amp; !startTime.equals(null) &amp;&amp; !endTime.equals(null) &amp;&amp; !deadlineDate.equals(null)</span>
+<span class="pc bpc" id="L211" title="2 of 4 branches missed.">				&amp;&amp; !deadlineTime.equals(null) &amp;&amp; !(exists)) {</span>
+<span class="fc" id="L212">			List&lt;Course&gt; courses = tamas.getCourses();</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">			for (int i = 0; i &lt; courses.size(); i++) {</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">				if (courses.get(i).equals(course)) {</span>
+<span class="fc" id="L215">					courses.get(i).addJobPosting(startTime, endTime, deadlineDate, deadlineTime, title, description, day, type);</span>
+<span class="fc" id="L216">					saveModel();</span>
+<span class="fc" id="L217">					return;</span>
+				}
+			}
+<span class="nc" id="L220">		} else {</span>
+<span class="nc" id="L221">			throw new InvalidInputException(&quot;A parameter has a bad value.&quot;);</span>
+		}
+<span class="nc" id="L223">	}</span>
+
+	public static void removeCourseJob(Course course, Job job) throws InvalidInputException {
+<span class="fc" id="L226">		List&lt;Job&gt; jobs = getCourseJobPostings(course);</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">		for (int i = 0; i &lt; jobs.size(); i++) {</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">			if (jobs.get(i).equals(job)) {</span>
+<span class="fc" id="L229">				jobs.get(i).delete();</span>
+<span class="fc" id="L230">				saveModel();</span>
+<span class="fc" id="L231">				return;</span>
+<span class="nc bnc" id="L232" title="All 4 branches missed.">			} else if ((i == jobs.size() - 1) &amp;&amp; !jobs.get(i).equals(job)) {</span>
+<span class="nc" id="L233">				throw new InvalidInputException(&quot;Could not remove course job.&quot;);</span>
+			}
+		}
+<span class="nc" id="L236">	}</span>
+
+	public static void allocateWorkerToJob(Job job, String username) throws InvalidInputException {
+<span class="fc" id="L239">		ca.mcgill.ecse321.tamas.model.CourseWorker worker = null;</span>
+<span class="fc" id="L240">		List&lt;User&gt; users = getModelUsers();</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">		for (ca.mcgill.ecse321.tamas.model.User user : users) {</span>
+<span class="pc bpc" id="L242" title="1 of 4 branches missed.">			if (user.getUsername().equals(username) &amp;&amp; user instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="fc" id="L243">				worker = (ca.mcgill.ecse321.tamas.model.CourseWorker) user;</span>
+			}
+		}
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">		if (worker.equals(null)) {</span>
+<span class="nc" id="L247">			throw new InvalidInputException(&quot;Failed to get courseworker for username.&quot;);</span>
+		}
+<span class="pc bpc" id="L249" title="2 of 4 branches missed.">		if (!job.equals(null) &amp;&amp; !worker.equals(null)) {</span>
+<span class="fc" id="L250">			List&lt;Course&gt; courses = tamas.getCourses();</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">			for (Course specificCourse : courses) {</span>
+<span class="fc" id="L252">				List&lt;Job&gt; jobs = specificCourse.getJobPostings();</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">				for (Job specificJob : jobs) {</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">					if (specificJob.equals(job)) {</span>
+<span class="fc" id="L255">						specificJob.setAllocatedWorker(worker);</span>
+<span class="fc" id="L256">						saveModel();</span>
+<span class="fc" id="L257">						return;</span>
+					}
+				}
+			}
+<span class="nc" id="L261">		} else {</span>
+<span class="nc" id="L262">			throw new InvalidInputException(&quot;A parameter has a bad value.&quot;);</span>
+		}
+<span class="nc" id="L264">	}</span>
+
+	public static void changeUserType(String username, Object newUserType) throws InvalidInputException {
+<span class="fc" id="L267">		List&lt;ca.mcgill.ecse321.tamas.authentication.User&gt; authUsers = getAuthenticationUsers();</span>
+<span class="fc" id="L268">		List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">		if (newUserType instanceof ca.mcgill.ecse321.tamas.authentication.CourseWorker</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">				|| newUserType instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="fc" id="L271">			int authIndex = -1;</span>
+<span class="fc" id="L272">			int modelIndex = -1;</span>
+
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">			for (int i = 0; i &lt; authUsers.size(); i++) {</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">				if (authUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L276">					authIndex = i;</span>
+<span class="fc" id="L277">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">			for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">				if (modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L283">					modelIndex = i;</span>
+<span class="fc" id="L284">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L288" title="2 of 4 branches missed.">			if ((authIndex == -1) || (modelIndex == -1)) {</span>
+<span class="nc" id="L289">				throw new InvalidInputException(&quot;Could not find user for username.&quot;);</span>
+			}
+
+<span class="fc" id="L292">			ca.mcgill.ecse321.tamas.authentication.CourseWorker replacementAuthUser = new ca.mcgill.ecse321.tamas.authentication.CourseWorker(</span>
+<span class="fc" id="L293">					username, authUsers.get(authIndex).getPassword(), authUsers.get(authIndex).getName());</span>
+<span class="fc" id="L294">			ca.mcgill.ecse321.tamas.model.CourseWorker replacementModelUser = new ca.mcgill.ecse321.tamas.model.CourseWorker(</span>
+<span class="fc" id="L295">					username, modelUsers.get(modelIndex).getName(), 0, 0, &quot;&quot;);</span>
+
+<span class="fc" id="L297">			authUsers.get(authIndex).delete();</span>
+<span class="fc" id="L298">			modelUsers.get(modelIndex).delete();</span>
+
+<span class="fc" id="L300">			authentication.addUser(replacementAuthUser);</span>
+<span class="fc" id="L301">			tamas.addUser(replacementModelUser);</span>
+
+<span class="fc" id="L303">			saveAuthentication();</span>
+<span class="fc" id="L304">			saveModel();</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">		} else if (newUserType instanceof ca.mcgill.ecse321.tamas.authentication.Instructor</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">				|| newUserType instanceof ca.mcgill.ecse321.tamas.model.Instructor) {</span>
+<span class="fc" id="L307">			int authIndex = -1;</span>
+<span class="fc" id="L308">			int modelIndex = -1;</span>
+
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">			for (int i = 0; i &lt; authUsers.size(); i++) {</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">				if (authUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L312">					authIndex = i;</span>
+<span class="fc" id="L313">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">			for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">				if (modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L319">					modelIndex = i;</span>
+<span class="fc" id="L320">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L324" title="2 of 4 branches missed.">			if ((authIndex == -1) || (modelIndex == -1)) {</span>
+<span class="nc" id="L325">				throw new InvalidInputException(&quot;Could not find user for username.&quot;);</span>
+			}
+
+<span class="fc" id="L328">			ca.mcgill.ecse321.tamas.authentication.Instructor replacementAuthUser = new ca.mcgill.ecse321.tamas.authentication.Instructor(</span>
+<span class="fc" id="L329">					username, authUsers.get(authIndex).getPassword(), authUsers.get(authIndex).getName());</span>
+<span class="fc" id="L330">			ca.mcgill.ecse321.tamas.model.Instructor replacementModelUser = new ca.mcgill.ecse321.tamas.model.Instructor(</span>
+<span class="fc" id="L331">					username, modelUsers.get(modelIndex).getName());</span>
+
+<span class="fc" id="L333">			authUsers.get(authIndex).delete();</span>
+<span class="fc" id="L334">			modelUsers.get(modelIndex).delete();</span>
+
+<span class="fc" id="L336">			authentication.addUser(replacementAuthUser);</span>
+<span class="fc" id="L337">			tamas.addUser(replacementModelUser);</span>
+
+<span class="fc" id="L339">			saveAuthentication();</span>
+<span class="fc" id="L340">			saveModel();</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">		} else if (newUserType instanceof ca.mcgill.ecse321.tamas.authentication.DepartmentAdministrator</span>
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">				|| newUserType instanceof ca.mcgill.ecse321.tamas.model.DepartmentAdministrator) {</span>
+<span class="fc" id="L343">			int authIndex = -1;</span>
+<span class="fc" id="L344">			int modelIndex = -1;</span>
+
+<span class="pc bpc" id="L346" title="1 of 2 branches missed.">			for (int i = 0; i &lt; authUsers.size(); i++) {</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">				if (authUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L348">					authIndex = i;</span>
+<span class="fc" id="L349">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">			for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="pc bpc" id="L354" title="1 of 2 branches missed.">				if (modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="fc" id="L355">					modelIndex = i;</span>
+<span class="fc" id="L356">					break;</span>
+				}
+			}
+
+<span class="pc bpc" id="L360" title="2 of 4 branches missed.">			if ((authIndex == -1) || (modelIndex == -1)) {</span>
+<span class="nc" id="L361">				throw new InvalidInputException(&quot;Could not find user for username.&quot;);</span>
+			}
+
+<span class="fc" id="L364">			ca.mcgill.ecse321.tamas.authentication.DepartmentAdministrator replacementAuthUser = new ca.mcgill.ecse321.tamas.authentication.DepartmentAdministrator(</span>
+<span class="fc" id="L365">					username, authUsers.get(authIndex).getPassword(), authUsers.get(authIndex).getName());</span>
+<span class="fc" id="L366">			ca.mcgill.ecse321.tamas.model.DepartmentAdministrator replacementModelUser = new ca.mcgill.ecse321.tamas.model.DepartmentAdministrator(</span>
+<span class="fc" id="L367">					username, modelUsers.get(modelIndex).getName());</span>
+
+<span class="fc" id="L369">			authUsers.get(authIndex).delete();</span>
+<span class="fc" id="L370">			modelUsers.get(modelIndex).delete();</span>
+
+<span class="fc" id="L372">			authentication.addUser(replacementAuthUser);</span>
+<span class="fc" id="L373">			tamas.addUser(replacementModelUser);</span>
+
+<span class="fc" id="L375">			saveAuthentication();</span>
+<span class="fc" id="L376">			saveModel();</span>
+<span class="fc" id="L377">		} else {</span>
+<span class="nc" id="L378">			throw new InvalidInputException(&quot;Invalid object newUserType.&quot;);</span>
+		}
+<span class="fc" id="L380">	}</span>
+
+	public static void changeJobApplicationStatus(JobApplication jobapplication,
+			JobApplication.ApplicationStatus newStatus) throws InvalidInputException {
+<span class="nc bnc" id="L384" title="All 4 branches missed.">		if (!jobapplication.equals(null) &amp;&amp; !newStatus.equals(null)) {</span>
+<span class="nc" id="L385">			jobapplication.setApplicationStatus(newStatus);</span>
+<span class="nc" id="L386">			saveModel();</span>
+<span class="nc" id="L387">			return;</span>
+		} else {
+<span class="nc" id="L389">			throw new InvalidInputException(&quot;A parameter has a bad value.&quot;);</span>
+		}
+	}
+
+	public static void addCourseWorkerEvaluation(Course course, Job job, String evaluatorUsername,
+			String courseWorkerUsername, String description) throws InvalidInputException {
+<span class="fc" id="L395">		ca.mcgill.ecse321.tamas.model.CourseWorker worker = null;</span>
+<span class="fc" id="L396">		ca.mcgill.ecse321.tamas.model.Instructor evaluator = null;</span>
+<span class="fc" id="L397">		List&lt;User&gt; users = getModelUsers();</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">		for(ca.mcgill.ecse321.tamas.model.User user : users) {</span>
+<span class="pc bpc" id="L399" title="1 of 4 branches missed.">			if(user.getUsername().equals(courseWorkerUsername) &amp;&amp; user instanceof ca.mcgill.ecse321.tamas.model.CourseWorker){</span>
+<span class="fc" id="L400">				worker = (ca.mcgill.ecse321.tamas.model.CourseWorker)user;</span>
+<span class="fc bfc" id="L401" title="All 2 branches covered.">			} else if (user.getUsername().equals(evaluatorUsername)) {</span>
+<span class="fc" id="L402">				evaluator = (ca.mcgill.ecse321.tamas.model.Instructor)user;</span>
+			}
+		}
+<span class="pc bpc" id="L405" title="2 of 4 branches missed.">		if(worker.equals(null) || evaluator.equals(null)){</span>
+<span class="nc" id="L406">			throw new InvalidInputException(&quot;Failed to get courseworker/instructor for username.&quot;);</span>
+		}
+<span class="pc bpc" id="L408" title="4 of 8 branches missed.">		if (!course.equals(null) &amp;&amp; !job.equals(null) &amp;&amp; !evaluator.equals(null) &amp;&amp; !worker.equals(null)) {</span>
+<span class="fc" id="L409">			List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">			for (ca.mcgill.ecse321.tamas.model.User specificUser : modelUsers) {</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">				if (specificUser.equals(worker)) {</span>
+<span class="fc" id="L412">					((ca.mcgill.ecse321.tamas.model.CourseWorker) specificUser)</span>
+<span class="fc" id="L413">					.addEval(new Evaluation(description, course, job, evaluator, worker));</span>
+<span class="fc" id="L414">					saveModel();</span>
+<span class="fc" id="L415">					return;</span>
+				}
+			}
+<span class="nc" id="L418">		} else {</span>
+<span class="nc" id="L419">			throw new InvalidInputException(&quot;A parameter has a bad value.&quot;);</span>
+		}
+<span class="nc" id="L421">	}</span>
+
+	public static void changeCourseWorkerAcademicStatus(String username, AcademicStatus newAcademicStatus)
+			throws InvalidInputException {
+<span class="fc" id="L425">		List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">		for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">			if (modelUsers.get(i).getUsername().equals(username)</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">					&amp;&amp; modelUsers.get(i) instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="pc bpc" id="L429" title="2 of 3 branches missed.">				switch (newAcademicStatus) {</span>
+				case GRADUATE:
+<span class="fc" id="L431">					((ca.mcgill.ecse321.tamas.model.CourseWorker) modelUsers.get(i))</span>
+<span class="fc" id="L432">					.setAcademicStatus(AcademicStatus.GRADUATE);</span>
+<span class="fc" id="L433">					saveModel();</span>
+<span class="fc" id="L434">					break;</span>
+				case UNDERGRADUATE:
+<span class="nc" id="L436">					((ca.mcgill.ecse321.tamas.model.CourseWorker) modelUsers.get(i))</span>
+<span class="nc" id="L437">					.setAcademicStatus(AcademicStatus.UNDERGRADUATE);</span>
+<span class="nc" id="L438">					saveModel();</span>
+<span class="nc" id="L439">					break;</span>
+				default:
+<span class="nc" id="L441">					throw new InvalidInputException(&quot;Invalid academic status passed to this method.&quot;);</span>
+				}
+<span class="fc" id="L443">				return;</span>
+			}
+		}
+<span class="nc" id="L446">	}</span>
+
+	public static void changeCourseWorkerMcGillID(String username, int newIDNumber) throws InvalidInputException {
+<span class="fc" id="L449">		List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">		for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="fc bfc" id="L451" title="All 2 branches covered.">			if (modelUsers.get(i).getUsername().equals(username)</span>
+<span class="pc bpc" id="L452" title="1 of 2 branches missed.">					&amp;&amp; modelUsers.get(i) instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="fc" id="L453">				((ca.mcgill.ecse321.tamas.model.CourseWorker) modelUsers.get(i)).setMcgillID(newIDNumber);</span>
+<span class="fc" id="L454">				saveModel();</span>
+<span class="fc" id="L455">				return;</span>
+<span class="pc bpc" id="L456" title="3 of 4 branches missed.">			} else if ((i == modelUsers.size() - 1) &amp;&amp; !modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="nc" id="L457">				throw new InvalidInputException(&quot;Could not change course worker McGill ID.&quot;);</span>
+			}
+		}
+<span class="nc" id="L460">	}</span>
+
+	public static void changeCourseWorkerPastExp(String username, String newExp) throws InvalidInputException {
+<span class="fc" id="L463">		List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="pc bpc" id="L464" title="1 of 2 branches missed.">		for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="fc bfc" id="L465" title="All 2 branches covered.">			if (modelUsers.get(i).getUsername().equals(username)</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">					&amp;&amp; modelUsers.get(i) instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="fc" id="L467">				((ca.mcgill.ecse321.tamas.model.CourseWorker) modelUsers.get(i)).setPastWorkerExperience(newExp);</span>
+<span class="fc" id="L468">				saveModel();</span>
+<span class="fc" id="L469">				return;</span>
+<span class="pc bpc" id="L470" title="3 of 4 branches missed.">			} else if ((i == modelUsers.size() - 1) &amp;&amp; !modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="nc" id="L471">				throw new InvalidInputException(&quot;Could not change course worker past experience.&quot;);</span>
+			}
+		}
+<span class="nc" id="L474">	}</span>
+
+	public static void applyForJob(Job job, Date applicationDate, Time applicationTime, int rank, String username)
+			throws InvalidInputException {
+<span class="pc bpc" id="L478" title="4 of 8 branches missed.">		if (!job.equals(null) &amp;&amp; !applicationDate.equals(null) &amp;&amp; !applicationTime.equals(null) &amp;&amp; rank &gt; -1</span>
+<span class="pc bpc" id="L479" title="2 of 4 branches missed.">				&amp;&amp; !username.equals(null) &amp;&amp; username.length() &gt; 0) {</span>
+<span class="fc" id="L480">			ca.mcgill.ecse321.tamas.model.CourseWorker worker = null;</span>
+<span class="fc" id="L481">			List&lt;User&gt; users = getModelUsers();</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">			for (ca.mcgill.ecse321.tamas.model.User user : users) {</span>
+<span class="pc bpc" id="L483" title="1 of 4 branches missed.">				if (user.getUsername().equals(username) &amp;&amp; user instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="fc" id="L484">					worker = (ca.mcgill.ecse321.tamas.model.CourseWorker) user;</span>
+				}
+			}
+<span class="pc bpc" id="L487" title="1 of 2 branches missed.">			if (worker.equals(null)) {</span>
+<span class="nc" id="L488">				throw new InvalidInputException(&quot;Failed to get courseworker for username.&quot;);</span>
+			}
+<span class="fc" id="L490">			List&lt;Course&gt; courses = tamas.getCourses();</span>
+<span class="pc bpc" id="L491" title="1 of 2 branches missed.">			for (Course specificCourse : courses) {</span>
+<span class="fc" id="L492">				List&lt;Job&gt; jobs = specificCourse.getJobPostings();</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">				for (Job specificJob : jobs) {</span>
+<span class="pc bpc" id="L494" title="1 of 2 branches missed.">					if (specificJob.equals(job)) {</span>
+						//specificJob.addJobApplication(applicationDate, applicationTime, rank, worker);
+<span class="fc" id="L496">						worker.addJobApplication(specificJob.addJobApplication(applicationDate, applicationTime, rank, worker));</span>
+<span class="fc" id="L497">						saveModel();</span>
+<span class="fc" id="L498">						return;</span>
+					}
+				}
+			}
+<span class="nc" id="L502">		} else {</span>
+<span class="nc" id="L503">			throw new InvalidInputException(&quot;A job application parameter has a bad value.&quot;);</span>
+		}
+<span class="nc" id="L505">	}</span>
+
+	public static ca.mcgill.ecse321.tamas.model.Course getCourse(int index) throws InvalidInputException{
+<span class="nc bnc" id="L508" title="All 2 branches missed.">		if (!(index&lt;0)) {</span>
+<span class="nc" id="L509">			return tamas.getCourse(index);</span>
+		} else {
+<span class="nc" id="L511">			throw new InvalidInputException(&quot;The entered index is bad.&quot;);</span>
+		}
+	}
+
+	public static ca.mcgill.ecse321.tamas.model.JobApplication getJobApplication(ca.mcgill.ecse321.tamas.model.CourseWorker courseWorker, ca.mcgill.ecse321.tamas.model.Job job) throws InvalidInputException{
+<span class="nc" id="L516">		List&lt;JobApplication&gt; jobApplications = Controller.getCourseWorkerJobApplications(courseWorker.getUsername());</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">        for (ca.mcgill.ecse321.tamas.model.JobApplication jobApplication : jobApplications) {</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">            if (jobApplication.getJob().getTitle().equals(job.getTitle())) {</span>
+<span class="nc" id="L519">            	return jobApplication;</span>
+            }
+        }
+<span class="nc" id="L522">        return null;</span>
+	}
+	
+	public static List&lt;ca.mcgill.ecse321.tamas.model.CourseWorker&gt; getApplicantList(Job job, JobApplication.ApplicationStatus status) throws InvalidInputException{
+<span class="nc" id="L526">		List&lt;ca.mcgill.ecse321.tamas.model.CourseWorker&gt; courseWorkerList = new ArrayList&lt;ca.mcgill.ecse321.tamas.model.CourseWorker&gt;();</span>
+		
+<span class="nc" id="L528">		List&lt;JobApplication&gt; jobApplications = job.getJobApplications();</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">		for (JobApplication jobApplication : jobApplications){</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">			if(jobApplication.getApplicationStatus().equals(status)){</span>
+<span class="nc" id="L531">				courseWorkerList.add(jobApplication.getWorker());</span>
+			}
+		}
+<span class="nc" id="L534">		return courseWorkerList;</span>
+		
+	}
+	
+	public static ca.mcgill.ecse321.tamas.model.CourseWorker getEmployee(String employeeName, Job job) throws InvalidInputException{
+<span class="nc" id="L539">		List&lt;JobApplication&gt; jobApplications = job.getJobApplications();</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">		for (ca.mcgill.ecse321.tamas.model.JobApplication jobApplication : jobApplications)	{</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">			if(jobApplication.getWorker().getName().equals(employeeName))	{</span>
+<span class="nc" id="L542">				return jobApplication.getWorker();</span>
+			}
+		}
+<span class="nc" id="L545">		return null;</span>
+	}
+	
+	public static void deleteJobApplications(String username) throws InvalidInputException{
+<span class="nc" id="L549">		List&lt;ca.mcgill.ecse321.tamas.model.User&gt; modelUsers = getModelUsers();</span>
+<span class="nc bnc" id="L550" title="All 2 branches missed.">		for (int i = 0; i &lt; modelUsers.size(); i++) {</span>
+<span class="nc bnc" id="L551" title="All 4 branches missed.">			if (modelUsers.get(i).getUsername().equals(username) &amp;&amp; modelUsers.get(i) instanceof ca.mcgill.ecse321.tamas.model.CourseWorker) {</span>
+<span class="nc" id="L552">				List&lt;JobApplication&gt; jobApplications = getCourseWorkerJobApplications(modelUsers.get(i).getUsername());</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">				for (int j = jobApplications.size()-1; j &gt;= 0; j--){</span>
+<span class="nc" id="L554">					jobApplications.get(j).delete();</span>
+				}
+<span class="nc" id="L556">				saveModel();</span>
+<span class="nc" id="L557">				return;</span>
+<span class="nc bnc" id="L558" title="All 4 branches missed.">			} else if ((i == modelUsers.size() - 1) &amp;&amp; !modelUsers.get(i).getUsername().equals(username)) {</span>
+<span class="nc" id="L559">				throw new InvalidInputException(&quot;Could not delete course worker Job Applications&quot;);</span>
+			}
+		}
+<span class="nc" id="L562">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

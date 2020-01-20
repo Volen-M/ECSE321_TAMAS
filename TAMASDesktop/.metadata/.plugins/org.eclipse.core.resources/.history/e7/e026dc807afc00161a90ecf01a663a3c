@@ -1,0 +1,84 @@
+package ca.mcgill.ecse321.tamas.view;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+public class MainPage extends JFrame {
+
+	private JTextField userNameTextField;
+	private JPasswordField passwordField;
+	private JLabel userPasswordLabel;
+	private JLabel userNameLabel;
+	private JButton loginButton;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7524951465830622117L;
+
+	public LoginPage(){
+		initComponents();
+	}
+
+
+
+	private void initComponents() {
+
+
+		passwordField = new JPasswordField();
+		userNameTextField = new JTextField();
+		userNameLabel = new JLabel();
+		userPasswordLabel = new JLabel();
+
+		loginButton = new JButton();
+
+
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setTitle("Desktop TAMAS");
+
+		//LABEL TEXT
+		userNameLabel.setText("Username:");
+		userPasswordLabel.setText("Password:");
+
+		//BUTTON TEXT
+		loginButton.setText("Login");
+
+		// layout
+		GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameLabel)
+						.addComponent(userPasswordLabel))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameTextField, 200, 200, 400)
+						.addComponent(passwordField, 200, 200, 400)
+						.addComponent(loginButton))
+				);
+
+		layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {loginButton, userNameTextField});
+
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameLabel)
+						.addComponent(userNameTextField))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userPasswordLabel)
+						.addComponent(passwordField))
+				.addComponent(loginButton)
+				);
+
+		pack();
+	}
+}

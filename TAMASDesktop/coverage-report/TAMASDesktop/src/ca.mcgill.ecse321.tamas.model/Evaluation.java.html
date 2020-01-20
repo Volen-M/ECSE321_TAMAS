@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Evaluation.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">Evaluation.java</span></div><h1>Evaluation.java</h1><pre class="source lang-java linenums">/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+
+// line 40 &quot;../../../../../Model.ump&quot;
+public class Evaluation
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Evaluation Attributes
+  private String description;
+
+  //Evaluation Associations
+  private Course course;
+  private Job job;
+  private Instructor evaluator;
+  private CourseWorker worker;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L27">  public Evaluation(String aDescription, Course aCourse, Job aJob, Instructor aEvaluator, CourseWorker aWorker)</span>
+  {
+<span class="fc" id="L29">    description = aDescription;</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">    if (!setCourse(aCourse))</span>
+    {
+<span class="nc" id="L32">      throw new RuntimeException(&quot;Unable to create Evaluation due to aCourse&quot;);</span>
+    }
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">    if (!setJob(aJob))</span>
+    {
+<span class="nc" id="L36">      throw new RuntimeException(&quot;Unable to create Evaluation due to aJob&quot;);</span>
+    }
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">    if (!setEvaluator(aEvaluator))</span>
+    {
+<span class="nc" id="L40">      throw new RuntimeException(&quot;Unable to create Evaluation due to aEvaluator&quot;);</span>
+    }
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">    if (!setWorker(aWorker))</span>
+    {
+<span class="nc" id="L44">      throw new RuntimeException(&quot;Unable to create Evaluation due to aWorker&quot;);</span>
+    }
+<span class="fc" id="L46">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setDescription(String aDescription)
+  {
+<span class="nc" id="L54">    boolean wasSet = false;</span>
+<span class="nc" id="L55">    description = aDescription;</span>
+<span class="nc" id="L56">    wasSet = true;</span>
+<span class="nc" id="L57">    return wasSet;</span>
+  }
+
+  public String getDescription()
+  {
+<span class="fc" id="L62">    return description;</span>
+  }
+
+  public Course getCourse()
+  {
+<span class="fc" id="L67">    return course;</span>
+  }
+
+  public Job getJob()
+  {
+<span class="fc" id="L72">    return job;</span>
+  }
+
+  public Instructor getEvaluator()
+  {
+<span class="fc" id="L77">    return evaluator;</span>
+  }
+
+  public CourseWorker getWorker()
+  {
+<span class="fc" id="L82">    return worker;</span>
+  }
+
+  public boolean setCourse(Course aNewCourse)
+  {
+<span class="fc" id="L87">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (aNewCourse != null)</span>
+    {
+<span class="fc" id="L90">      course = aNewCourse;</span>
+<span class="fc" id="L91">      wasSet = true;</span>
+    }
+<span class="fc" id="L93">    return wasSet;</span>
+  }
+
+  public boolean setJob(Job aNewJob)
+  {
+<span class="fc" id="L98">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">    if (aNewJob != null)</span>
+    {
+<span class="fc" id="L101">      job = aNewJob;</span>
+<span class="fc" id="L102">      wasSet = true;</span>
+    }
+<span class="fc" id="L104">    return wasSet;</span>
+  }
+
+  public boolean setEvaluator(Instructor aNewEvaluator)
+  {
+<span class="fc" id="L109">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">    if (aNewEvaluator != null)</span>
+    {
+<span class="fc" id="L112">      evaluator = aNewEvaluator;</span>
+<span class="fc" id="L113">      wasSet = true;</span>
+    }
+<span class="fc" id="L115">    return wasSet;</span>
+  }
+
+  public boolean setWorker(CourseWorker aNewWorker)
+  {
+<span class="fc" id="L120">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">    if (aNewWorker != null)</span>
+    {
+<span class="fc" id="L123">      worker = aNewWorker;</span>
+<span class="fc" id="L124">      wasSet = true;</span>
+    }
+<span class="fc" id="L126">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="nc" id="L131">    course = null;</span>
+<span class="nc" id="L132">    job = null;</span>
+<span class="nc" id="L133">    evaluator = null;</span>
+<span class="nc" id="L134">    worker = null;</span>
+<span class="nc" id="L135">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L140">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L141">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L142">            &quot;description&quot; + &quot;:&quot; + getDescription()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;course = &quot;+(getCourse()!=null?Integer.toHexString(System.identityHashCode(getCourse())):&quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;job = &quot;+(getJob()!=null?Integer.toHexString(System.identityHashCode(getJob())):&quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;evaluator = &quot;+(getEvaluator()!=null?Integer.toHexString(System.identityHashCode(getEvaluator())):&quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;worker = &quot;+(getWorker()!=null?Integer.toHexString(System.identityHashCode(getWorker())):&quot;null&quot;)</span>
+<span class="fc" id="L147">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

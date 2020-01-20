@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>PersistenceMobile.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.persistence</a> &gt; <span class="el_source">PersistenceMobile.java</span></div><h1>PersistenceMobile.java</h1><pre class="source lang-java linenums">package ca.mcgill.ecse321.tamas.persistence;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import com.thoughtworks.xstream.XStream;
+
+import ca.mcgill.ecse321.tamas.authentication.Authentication;
+import ca.mcgill.ecse321.tamas.model.Course;
+import ca.mcgill.ecse321.tamas.model.Evaluation;
+import ca.mcgill.ecse321.tamas.model.Job;
+import ca.mcgill.ecse321.tamas.model.JobApplication;
+import ca.mcgill.ecse321.tamas.model.Tamas;
+
+<span class="nc" id="L18">public abstract class PersistenceMobile {</span>
+
+<span class="nc" id="L20">    private static XStream xstream = new XStream();</span>
+<span class="nc" id="L21">    private static String datafile = &quot;data.xml&quot;;</span>
+<span class="nc" id="L22">    private static String userfile = &quot;user.xml&quot;;</span>
+    
+    public static Tamas initializeModelManager(String datafile3){
+    	Tamas tamas;
+<span class="nc" id="L26">    	setDatafile(datafile3);</span>
+<span class="nc" id="L27">        setAlias(&quot;course&quot;, Course.class);</span>
+<span class="nc" id="L28">        setAlias(&quot;evaluation&quot;, Evaluation.class);</span>
+<span class="nc" id="L29">        setAlias(&quot;job&quot;, Job.class);</span>
+<span class="nc" id="L30">        setAlias(&quot;jobapplication&quot;, JobApplication.class);</span>
+<span class="nc" id="L31">        setAlias(&quot;tamas&quot;, Tamas.class);</span>
+    	
+<span class="nc" id="L33">        File file = new File(datafile);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (file.exists()) {</span>
+<span class="nc" id="L35">            tamas = (Tamas) loadModelFromXMLwithXStream();</span>
+<span class="nc" id="L36">        } else {</span>
+            try {
+<span class="nc" id="L38">                file.createNewFile();</span>
+<span class="nc" id="L39">            } catch (IOException e) {</span>
+<span class="nc" id="L40">                e.printStackTrace();</span>
+<span class="nc" id="L41">                System.exit(1);</span>
+            }
+<span class="nc" id="L43">            tamas = new Tamas();</span>
+<span class="nc" id="L44">            saveModelToXMLwithXStream(tamas);</span>
+        }
+<span class="nc" id="L46">        return tamas;</span>
+    }
+
+    public static Authentication initializeAuthenticationManager(String userfile3){
+    	Authentication authentication;
+<span class="nc" id="L51">    	setUserfile(userfile3);</span>
+<span class="nc" id="L52">        setAlias(&quot;authentication&quot;, ca.mcgill.ecse321.tamas.authentication.Authentication.class);</span>
+<span class="nc" id="L53">        setAlias(&quot;user&quot;, ca.mcgill.ecse321.tamas.authentication.User.class);</span>
+<span class="nc" id="L54">        setAlias(&quot;courseworker&quot;, ca.mcgill.ecse321.tamas.authentication.CourseWorker.class);</span>
+<span class="nc" id="L55">        setAlias(&quot;instructor&quot;, ca.mcgill.ecse321.tamas.authentication.Instructor.class);</span>
+<span class="nc" id="L56">        setAlias(&quot;departmentadministrator&quot;, ca.mcgill.ecse321.tamas.authentication.DepartmentAdministrator.class);;</span>
+    	
+<span class="nc" id="L58">        File file = new File(userfile);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (file.exists()) {</span>
+<span class="nc" id="L60">            authentication = (Authentication) loadAuthenticationFromXMLwithXStream();</span>
+<span class="nc" id="L61">        } else {</span>
+            try {
+<span class="nc" id="L63">                file.createNewFile();</span>
+<span class="nc" id="L64">            } catch (IOException e) {</span>
+<span class="nc" id="L65">                e.printStackTrace();</span>
+<span class="nc" id="L66">                System.exit(1);</span>
+            }
+<span class="nc" id="L68">            authentication = new Authentication();</span>
+<span class="nc" id="L69">            saveModelToXMLwithXStream(authentication);</span>
+        }
+<span class="nc" id="L71">        return authentication;</span>
+    	
+    }
+    
+	public static boolean saveModelToXMLwithXStream(Object obj) {
+<span class="nc" id="L76">        xstream.setMode(XStream.ID_REFERENCES);</span>
+<span class="nc" id="L77">        String xml = xstream.toXML(obj); // save our xml file</span>
+
+        try {
+<span class="nc" id="L80">            FileWriter writer = new FileWriter(datafile);</span>
+<span class="nc" id="L81">            writer.write(xml);</span>
+<span class="nc" id="L82">            writer.close();</span>
+<span class="nc" id="L83">            return true;</span>
+<span class="nc" id="L84">        } catch (IOException e) {</span>
+<span class="nc" id="L85">            e.printStackTrace();</span>
+<span class="nc" id="L86">            return false;</span>
+        }
+    }
+
+    public static Object loadModelFromXMLwithXStream(){
+<span class="nc" id="L91">        xstream.setMode(XStream.ID_REFERENCES);</span>
+        try {
+<span class="nc" id="L93">            FileReader fileReader = new FileReader(datafile); // load our xml file</span>
+<span class="nc" id="L94">            return xstream.fromXML(fileReader);</span>
+        }
+<span class="nc" id="L96">        catch (IOException e) {</span>
+<span class="nc" id="L97">            e.printStackTrace();</span>
+<span class="nc" id="L98">            return null;</span>
+        }
+    }
+
+    public static boolean saveAuthenticationToXMLwithXStream(Object obj) {
+<span class="nc" id="L103">        xstream.setMode(XStream.ID_REFERENCES);</span>
+<span class="nc" id="L104">        String xml = xstream.toXML(obj); // save our xml file</span>
+
+        try {
+<span class="nc" id="L107">            FileWriter writer = new FileWriter(userfile);</span>
+<span class="nc" id="L108">            writer.write(xml);</span>
+<span class="nc" id="L109">            writer.close();</span>
+<span class="nc" id="L110">            return true;</span>
+<span class="nc" id="L111">        } catch (IOException e) {</span>
+<span class="nc" id="L112">            e.printStackTrace();</span>
+<span class="nc" id="L113">            return false;</span>
+        }
+    }
+
+    public static Object loadAuthenticationFromXMLwithXStream(){
+<span class="nc" id="L118">            xstream.setMode(XStream.ID_REFERENCES);</span>
+            try {
+<span class="nc" id="L120">                FileReader fileReader = new FileReader(userfile); // load our xml file</span>
+<span class="nc" id="L121">                return xstream.fromXML(fileReader);</span>
+            }
+<span class="nc" id="L123">            catch (IOException e) {</span>
+<span class="nc" id="L124">                e.printStackTrace();</span>
+<span class="nc" id="L125">                return null;</span>
+            }
+    }
+
+    public static void setAlias(String xmlTagName, Class&lt;?&gt; className) {
+<span class="nc" id="L130">        xstream.alias(xmlTagName, className);</span>
+<span class="nc" id="L131">    }</span>
+    
+    private static void setDatafile(String datafile2) {
+<span class="nc" id="L134">		datafile = datafile2;</span>
+<span class="nc" id="L135">	}</span>
+    
+    private static void setUserfile(String userfile2) {
+<span class="nc" id="L138">		userfile = userfile2;</span>
+		
+<span class="nc" id="L140">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

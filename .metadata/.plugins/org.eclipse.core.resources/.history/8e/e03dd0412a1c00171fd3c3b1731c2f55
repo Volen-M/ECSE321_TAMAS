@@ -1,0 +1,259 @@
+<?php
+require_once 'authentication/Authentication.php';
+require_once 'controller/Controller.php';
+
+use \ca\mcgill\ecse321\tamas\web\controller\Controller;
+use \ca\mcgill\ecse321\tamas\web\authentication\Authentication;
+
+session_start();
+
+Controller::loadAuthentication();
+Controller::loadModel();
+
+$users = Controller::getAuthenticationUsers();
+foreach ($users as $user) {
+    if($user->getUsername() === $_GET["username"]) {
+        Controller::setCurrentUser($user);
+    }
+}
+
+if(Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\CourseWorker){
+    echo "
+<!DOCTYPE html>
+<html>
+   
+    <body style=\"font-family: Arial;\">
+        <div style=\"margin: auto;
+                    display: block;
+                    width: 300px;\">
+	
+            <b>Apply for a Job.</b>
+	
+            <form action=\"addjobposting.php\" method=\"post\" id=\"postjobform\">
+            	
+                <p> Applicant's List<p>
+                   <select>
+						<option value="opt1">opt1</option>
+				    </select>
+                    <p> <button type="button">View Applicant Information</button></p>
+                <p> Profile Description <textarea rows=\"4\" cols=\"50\" name=\"jobpostingdescription\" placeholder=\"Enter job description here...\" form=\"postjobform\"></textarea></p> 
+                
+                <p> Education level <p> 
+                  <input type="radio" > Graduate 
+  				  <input type="radio"> Undergraduate
+                  
+                <p> <button type="button">Apply to Job</button></p>
+                <p> <button type="button">Accept Job offer</button></p>
+                <p> <button type="button">Decline Job offer</button></p>
+                        
+                <p> Course's List<p>
+                   <select>
+						<option value="opt1">opt1</option>
+				    </select>
+                    <p> <button type="button">Load Course's Job List</button></p>
+                    
+                 <p> Job's List<p>
+                   <select>
+  						<option value="opt1">opt1</option>
+				   </select>
+                    <p> <button type="button">Load Job</button></p>
+                
+                <p>Job Title: <span><input type=\"text\" name=\"mainPageJobTitle\"></span></p>
+                
+   
+                
+                <label for=\"jobpostingdescription\">Job Description:</label>
+                <textarea rows=\"4\" cols=\"50\" name=\"jobpostingdescription\" placeholder=\"Enter job description here...\" form=\"postjobform\"></textarea>
+                <p> <button type="button">Post Job</button></p>
+                
+                
+                <p> Application Deadline Information: <p> 
+               
+               	<p> Application Deadline Time: </p> 
+   				
+                
+   
+
+           		<p> Working Days </p> 
+                  <input type="radio" > Monday 
+  				  <input type="radio"> Tuesday 
+                  <input type="radio" > Wednesday 
+  				  <input type="radio"> Thursday  
+				  <input type="radio" > Friday 
+                   
+                <p>Total Worked Hours per week: <span><input type=\"text\" name=\"mainPageWorkedHours\"></span></p>
+ 
+                  <input type="radio" > Grader 
+  				  <input type="radio"> Teaching Assistant
+                  <input type="radio" > Lab Technician 
+                
+                <p>Course Title: <span><input type=\"text\" name=\"mainPageCourseTitle\"></span></p>
+                <p>Amount of Course hours: <span><input type=\"text\" name=\"mainPageCourseHours\"></span></p>
+                <p>Amount of Lab Sessions: <span><input type=\"text\" name=\"mainPageLabSessions\"></span></p>
+                <p>Amount of Tutorial Sessions: <span><input type=\"text\" name=\"mainPageTutorialSessions\"></span></p>
+                <p>Amount of Enrolled Students: <span><input type=\"text\" name=\"mainPageEnrolledStudents\"></span></p>
+                
+            </form>
+			
+	
+        </div>
+    </body>
+</html>";
+} else if (Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\Instructor) {
+    echo "
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=\"UTF-8\">
+        <link rel=\"shortcut icon\" href=\"favicon.ico\" type=\"image/x-icon\">
+        <title>Teaching Assistant Management System - Main Page</title>
+        <style>
+            .error {color: #FF0000;}
+            .success {color: #409F40;}
+	
+            input[type=text], select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+	
+            input[type=password], select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+	
+            textarea {
+                resize: none;
+                width: 98%;
+            }
+	
+            input[type=submit] {
+                width: 100%;
+                background-color: #4C8BAF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+	
+            input[type=submit]:hover {
+                background-color: #4CA0AF;
+            }
+	
+            div {
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body style=\"font-family: Arial;\">
+        <div style=\"margin: auto;
+                    display: block;
+                    width: 300px;\">
+	
+            <b>Post a Job.</b>
+	
+            <form action=\"addjobposting.php\" method=\"post\" id=\"postjobform\">
+                <p>Course: <span><input type=\"text\" name=\"mainPageCourse\"></span></p>
+                <p>Job Title: <span><input type=\"text\" name=\"mainPageJobTitle\"></span></p>
+                <label for=\"jobpostingdescription\">Job Description:</label>
+                <textarea rows=\"4\" cols=\"50\" name=\"jobpostingdescription\" placeholder=\"Enter job description here...\" form=\"postjobform\"></textarea>
+                <p><input type=\"submit\" value=\"Post Job Posting\"></p>
+            </form>
+	
+        </div>
+    </body>
+</html>";
+} else if (Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\DepartmentAdministrator) {
+    echo "
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=\"UTF-8\">
+        <link rel=\"shortcut icon\" href=\"favicon.ico\" type=\"image/x-icon\">
+        <title>Teaching Assistant Management System - Main Page</title>
+        <style>
+            .error {color: #FF0000;}
+            .success {color: #409F40;}
+	
+            input[type=text], select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+	
+            input[type=password], select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+	
+            textarea {
+                resize: none;
+                width: 98%;
+            }
+	
+            input[type=submit] {
+                width: 100%;
+                background-color: #4C8BAF;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+	
+            input[type=submit]:hover {
+                background-color: #4CA0AF;
+            }
+	
+            div {
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body style=\"font-family: Arial;\">
+        <div style=\"margin: auto;
+                    display: block;
+                    width: 300px;\">
+	
+            <b>Edit a Job.</b>
+	
+            <form action=\"addjobposting.php\" method=\"post\" id=\"postjobform\">
+                <p>Course: <span><input type=\"text\" name=\"mainPageCourse\"></span></p>
+                <p>Job Title: <span><input type=\"text\" name=\"mainPageJobTitle\"></span></p>
+                <label for=\"jobpostingdescription\">Job Description:</label>
+                <textarea rows=\"4\" cols=\"50\" name=\"jobpostingdescription\" placeholder=\"Enter job description here...\" form=\"postjobform\"></textarea>
+                <p><input type=\"submit\" value=\"Post Job Posting\"></p>
+            </form>
+	
+        </div>
+    </body>
+</html>";
+} else {
+    throw new Exception("Invalid current user.");
+}
+?>

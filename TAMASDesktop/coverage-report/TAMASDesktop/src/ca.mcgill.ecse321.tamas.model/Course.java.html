@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Course.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">Course.java</span></div><h1>Course.java</h1><pre class="source lang-java linenums">/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+import java.util.*;
+import java.sql.Time;
+import java.sql.Date;
+
+// line 8 &quot;../../../../../Model.ump&quot;
+public class Course
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Course Attributes
+  private String name;
+  private double budget;
+  private int studentsEnrolled;
+  private int credits;
+  private int hours;
+  private int tutorialCount;
+  private int labCount;
+
+  //Course Associations
+  private List&lt;Job&gt; jobPostings;
+  private Tamas tamas;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L34">  public Course(String aName, double aBudget, int aStudentsEnrolled, int aCredits, int aHours, int aTutorialCount, int aLabCount, Tamas aTamas)</span>
+  {
+<span class="fc" id="L36">    name = aName;</span>
+<span class="fc" id="L37">    budget = aBudget;</span>
+<span class="fc" id="L38">    studentsEnrolled = aStudentsEnrolled;</span>
+<span class="fc" id="L39">    credits = aCredits;</span>
+<span class="fc" id="L40">    hours = aHours;</span>
+<span class="fc" id="L41">    tutorialCount = aTutorialCount;</span>
+<span class="fc" id="L42">    labCount = aLabCount;</span>
+<span class="fc" id="L43">    jobPostings = new ArrayList&lt;Job&gt;();</span>
+<span class="fc" id="L44">    boolean didAddTamas = setTamas(aTamas);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">    if (!didAddTamas)</span>
+    {
+<span class="nc" id="L47">      throw new RuntimeException(&quot;Unable to create course due to tamas&quot;);</span>
+    }
+<span class="fc" id="L49">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setName(String aName)
+  {
+<span class="fc" id="L57">    boolean wasSet = false;</span>
+<span class="fc" id="L58">    name = aName;</span>
+<span class="fc" id="L59">    wasSet = true;</span>
+<span class="fc" id="L60">    return wasSet;</span>
+  }
+
+  public boolean setBudget(double aBudget)
+  {
+<span class="fc" id="L65">    boolean wasSet = false;</span>
+<span class="fc" id="L66">    budget = aBudget;</span>
+<span class="fc" id="L67">    wasSet = true;</span>
+<span class="fc" id="L68">    return wasSet;</span>
+  }
+
+  public boolean setStudentsEnrolled(int aStudentsEnrolled)
+  {
+<span class="fc" id="L73">    boolean wasSet = false;</span>
+<span class="fc" id="L74">    studentsEnrolled = aStudentsEnrolled;</span>
+<span class="fc" id="L75">    wasSet = true;</span>
+<span class="fc" id="L76">    return wasSet;</span>
+  }
+
+  public boolean setCredits(int aCredits)
+  {
+<span class="fc" id="L81">    boolean wasSet = false;</span>
+<span class="fc" id="L82">    credits = aCredits;</span>
+<span class="fc" id="L83">    wasSet = true;</span>
+<span class="fc" id="L84">    return wasSet;</span>
+  }
+
+  public boolean setHours(int aHours)
+  {
+<span class="fc" id="L89">    boolean wasSet = false;</span>
+<span class="fc" id="L90">    hours = aHours;</span>
+<span class="fc" id="L91">    wasSet = true;</span>
+<span class="fc" id="L92">    return wasSet;</span>
+  }
+
+  public boolean setTutorialCount(int aTutorialCount)
+  {
+<span class="fc" id="L97">    boolean wasSet = false;</span>
+<span class="fc" id="L98">    tutorialCount = aTutorialCount;</span>
+<span class="fc" id="L99">    wasSet = true;</span>
+<span class="fc" id="L100">    return wasSet;</span>
+  }
+
+  public boolean setLabCount(int aLabCount)
+  {
+<span class="fc" id="L105">    boolean wasSet = false;</span>
+<span class="fc" id="L106">    labCount = aLabCount;</span>
+<span class="fc" id="L107">    wasSet = true;</span>
+<span class="fc" id="L108">    return wasSet;</span>
+  }
+
+  public String getName()
+  {
+<span class="fc" id="L113">    return name;</span>
+  }
+
+  public double getBudget()
+  {
+<span class="fc" id="L118">    return budget;</span>
+  }
+
+  public int getStudentsEnrolled()
+  {
+<span class="fc" id="L123">    return studentsEnrolled;</span>
+  }
+
+  public int getCredits()
+  {
+<span class="fc" id="L128">    return credits;</span>
+  }
+
+  public int getHours()
+  {
+<span class="fc" id="L133">    return hours;</span>
+  }
+
+  public int getTutorialCount()
+  {
+<span class="fc" id="L138">    return tutorialCount;</span>
+  }
+
+  public int getLabCount()
+  {
+<span class="fc" id="L143">    return labCount;</span>
+  }
+
+  public Job getJobPosting(int index)
+  {
+<span class="fc" id="L148">    Job aJobPosting = jobPostings.get(index);</span>
+<span class="fc" id="L149">    return aJobPosting;</span>
+  }
+
+  public List&lt;Job&gt; getJobPostings()
+  {
+<span class="fc" id="L154">    List&lt;Job&gt; newJobPostings = Collections.unmodifiableList(jobPostings);</span>
+<span class="fc" id="L155">    return newJobPostings;</span>
+  }
+
+  public int numberOfJobPostings()
+  {
+<span class="fc" id="L160">    int number = jobPostings.size();</span>
+<span class="fc" id="L161">    return number;</span>
+  }
+
+  public boolean hasJobPostings()
+  {
+<span class="fc bfc" id="L166" title="All 2 branches covered.">    boolean has = jobPostings.size() &gt; 0;</span>
+<span class="fc" id="L167">    return has;</span>
+  }
+
+  public int indexOfJobPosting(Job aJobPosting)
+  {
+<span class="fc" id="L172">    int index = jobPostings.indexOf(aJobPosting);</span>
+<span class="fc" id="L173">    return index;</span>
+  }
+
+  public Tamas getTamas()
+  {
+<span class="fc" id="L178">    return tamas;</span>
+  }
+
+  public static int minimumNumberOfJobPostings()
+  {
+<span class="nc" id="L183">    return 0;</span>
+  }
+
+  public Job addJobPosting(Time aStartTime, Time aEndTime, Date aDeadlineDate, Time aDeadlineTime, String aTitle, String aDescription, Job.Day aDay, Job.Type aType)
+  {
+<span class="fc" id="L188">    return new Job(aStartTime, aEndTime, aDeadlineDate, aDeadlineTime, aTitle, aDescription, this, aDay, aType);</span>
+  }
+
+  public boolean addJobPosting(Job aJobPosting)
+  {
+<span class="fc" id="L193">    boolean wasAdded = false;</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">    if (jobPostings.contains(aJobPosting)) { return false; }</span>
+<span class="fc" id="L195">    Course existingCourse = aJobPosting.getCourse();</span>
+<span class="pc bpc" id="L196" title="2 of 4 branches missed.">    boolean isNewCourse = existingCourse != null &amp;&amp; !this.equals(existingCourse);</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">    if (isNewCourse)</span>
+    {
+<span class="nc" id="L199">      aJobPosting.setCourse(this);</span>
+<span class="nc" id="L200">    }</span>
+    else
+    {
+<span class="fc" id="L203">      jobPostings.add(aJobPosting);</span>
+    }
+<span class="fc" id="L205">    wasAdded = true;</span>
+<span class="fc" id="L206">    return wasAdded;</span>
+  }
+
+  public boolean removeJobPosting(Job aJobPosting)
+  {
+<span class="fc" id="L211">    boolean wasRemoved = false;</span>
+    //Unable to remove aJobPosting, as it must always have a course
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">    if (!this.equals(aJobPosting.getCourse()))</span>
+    {
+<span class="fc" id="L215">      jobPostings.remove(aJobPosting);</span>
+<span class="fc" id="L216">      wasRemoved = true;</span>
+    }
+<span class="fc" id="L218">    return wasRemoved;</span>
+  }
+
+  public boolean addJobPostingAt(Job aJobPosting, int index)
+  {  
+<span class="nc" id="L223">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">    if(addJobPosting(aJobPosting))</span>
+    {
+<span class="nc bnc" id="L226" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">      if(index &gt; numberOfJobPostings()) { index = numberOfJobPostings() - 1; }</span>
+<span class="nc" id="L228">      jobPostings.remove(aJobPosting);</span>
+<span class="nc" id="L229">      jobPostings.add(index, aJobPosting);</span>
+<span class="nc" id="L230">      wasAdded = true;</span>
+    }
+<span class="nc" id="L232">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveJobPostingAt(Job aJobPosting, int index)
+  {
+<span class="fc" id="L237">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">    if(jobPostings.contains(aJobPosting))</span>
+    {
+<span class="fc bfc" id="L240" title="All 2 branches covered.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">      if(index &gt; numberOfJobPostings()) { index = numberOfJobPostings() - 1; }</span>
+<span class="fc" id="L242">      jobPostings.remove(aJobPosting);</span>
+<span class="fc" id="L243">      jobPostings.add(index, aJobPosting);</span>
+<span class="fc" id="L244">      wasAdded = true;</span>
+<span class="fc" id="L245">    } </span>
+    else 
+    {
+<span class="nc" id="L248">      wasAdded = addJobPostingAt(aJobPosting, index);</span>
+    }
+<span class="fc" id="L250">    return wasAdded;</span>
+  }
+
+  public boolean setTamas(Tamas aTamas)
+  {
+<span class="fc" id="L255">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">    if (aTamas == null)</span>
+    {
+<span class="nc" id="L258">      return wasSet;</span>
+    }
+
+<span class="fc" id="L261">    Tamas existingTamas = tamas;</span>
+<span class="fc" id="L262">    tamas = aTamas;</span>
+<span class="pc bpc" id="L263" title="1 of 4 branches missed.">    if (existingTamas != null &amp;&amp; !existingTamas.equals(aTamas))</span>
+    {
+<span class="nc" id="L265">      existingTamas.removeCourse(this);</span>
+    }
+<span class="fc" id="L267">    tamas.addCourse(this);</span>
+<span class="fc" id="L268">    wasSet = true;</span>
+<span class="fc" id="L269">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="fc bfc" id="L274" title="All 2 branches covered.">    while (jobPostings.size() &gt; 0)</span>
+    {
+<span class="fc" id="L276">      Job aJobPosting = jobPostings.get(jobPostings.size() - 1);</span>
+<span class="fc" id="L277">      aJobPosting.delete();</span>
+<span class="fc" id="L278">      jobPostings.remove(aJobPosting);</span>
+    }
+    
+<span class="fc" id="L281">    Tamas placeholderTamas = tamas;</span>
+<span class="fc" id="L282">    this.tamas = null;</span>
+<span class="fc" id="L283">    placeholderTamas.removeCourse(this);</span>
+<span class="fc" id="L284">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L289">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L290">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L291">            &quot;name&quot; + &quot;:&quot; + getName()+ &quot;,&quot; +</span>
+<span class="fc" id="L292">            &quot;budget&quot; + &quot;:&quot; + getBudget()+ &quot;,&quot; +</span>
+<span class="fc" id="L293">            &quot;studentsEnrolled&quot; + &quot;:&quot; + getStudentsEnrolled()+ &quot;,&quot; +</span>
+<span class="fc" id="L294">            &quot;credits&quot; + &quot;:&quot; + getCredits()+ &quot;,&quot; +</span>
+<span class="fc" id="L295">            &quot;hours&quot; + &quot;:&quot; + getHours()+ &quot;,&quot; +</span>
+<span class="fc" id="L296">            &quot;tutorialCount&quot; + &quot;:&quot; + getTutorialCount()+ &quot;,&quot; +</span>
+<span class="fc" id="L297">            &quot;labCount&quot; + &quot;:&quot; + getLabCount()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;tamas = &quot;+(getTamas()!=null?Integer.toHexString(System.identityHashCode(getTamas())):&quot;null&quot;)</span>
+<span class="fc" id="L299">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

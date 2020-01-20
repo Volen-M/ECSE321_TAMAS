@@ -1,0 +1,132 @@
+package ca.mcgill.ecse321.tamas.view;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+
+public class LoginPage extends JFrame {
+
+	private JTextField userNameTextField;
+	private JTextField ruserNameTextField;
+	
+	private JPasswordField passwordField;
+	private JPasswordField rpasswordField;
+	private JPasswordField rconfirmpasswordField;
+	
+	private JLabel userPasswordLabel;
+	private JLabel userNameLabel;
+	private JLabel ruserPasswordLabel;
+	private JLabel ruserconfirmPasswordLabel;
+	private JLabel ruserNameLabel;
+	
+	private JButton signupButton;
+	private JButton loginButton;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7524951465830622117L;
+
+	public LoginPage(){
+		initComponents();
+	}
+
+
+
+	private void initComponents() {
+		setResizable(false);
+
+		passwordField = new JPasswordField();
+		rpasswordField = new JPasswordField();
+		rconfirmpasswordField = new JPasswordField();
+
+		userNameTextField = new JTextField();
+		ruserNameTextField = new JTextField();
+		
+		userNameLabel = new JLabel();
+		ruserNameLabel = new JLabel();
+		userPasswordLabel = new JLabel();
+		ruserPasswordLabel = new JLabel();
+		ruserconfirmPasswordLabel = new JLabel();
+
+		loginButton = new JButton();
+		signupButton = new JButton();
+
+
+
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setTitle("Desktop TAMAS");
+
+		//LABEL TEXT
+		userNameLabel.setText("Username:");
+		ruserNameLabel.setText("New Username:");
+		userPasswordLabel.setText("Password:");
+		ruserPasswordLabel.setText("New Password:");
+		ruserconfirmPasswordLabel.setText("Confirm Password:");
+		
+
+		//BUTTON TEXT
+		loginButton.setText("Login");
+		signupButton.setText("Register");
+
+		// layout
+		GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+
+		layout.setHorizontalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameLabel)
+						.addComponent(userPasswordLabel)
+						.addComponent(ruserNameLabel)
+						.addComponent(ruserPasswordLabel)
+						.addComponent(ruserconfirmPasswordLabel)
+						)
+					
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameTextField, 200, 200, 400)
+						.addComponent(passwordField, 200, 200, 400)
+						.addComponent(loginButton)
+						.addComponent(ruserNameTextField, 200, 200, 400)
+						.addComponent(rpasswordField, 200, 200, 400)
+						.addComponent(rconfirmpasswordField, 200, 200, 400)
+						.addComponent(signupButton)
+						)
+				
+				);
+
+		layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {loginButton, userNameTextField});
+		layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {signupButton, userNameTextField});
+
+		layout.setVerticalGroup(
+				layout.createSequentialGroup()
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userNameLabel)
+						.addComponent(userNameTextField))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(userPasswordLabel)
+						.addComponent(passwordField))
+				.addComponent(loginButton)
+				.addGroup(layout.createParallelGroup()
+						.addComponent(ruserNameLabel)
+						.addComponent(ruserNameTextField))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(ruserPasswordLabel)
+						.addComponent(rpasswordField))
+				.addGroup(layout.createParallelGroup()
+						.addComponent(ruserconfirmPasswordLabel)
+						.addComponent(rconfirmpasswordField))
+				.addComponent(signupButton)
+				
+				);
+
+		pack();
+	}
+}

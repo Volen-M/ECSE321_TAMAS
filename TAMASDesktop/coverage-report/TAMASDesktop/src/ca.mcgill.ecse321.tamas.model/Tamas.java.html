@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>Tamas.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">Tamas.java</span></div><h1>Tamas.java</h1><pre class="source lang-java linenums">/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+import java.util.*;
+
+// line 3 &quot;../../../../../Model.ump&quot;
+public class Tamas
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Tamas Associations
+  private List&lt;Course&gt; courses;
+  private List&lt;User&gt; users;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L23">  public Tamas()</span>
+  {
+<span class="fc" id="L25">    courses = new ArrayList&lt;Course&gt;();</span>
+<span class="fc" id="L26">    users = new ArrayList&lt;User&gt;();</span>
+<span class="fc" id="L27">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public Course getCourse(int index)
+  {
+<span class="fc" id="L35">    Course aCourse = courses.get(index);</span>
+<span class="fc" id="L36">    return aCourse;</span>
+  }
+
+  public List&lt;Course&gt; getCourses()
+  {
+<span class="fc" id="L41">    List&lt;Course&gt; newCourses = Collections.unmodifiableList(courses);</span>
+<span class="fc" id="L42">    return newCourses;</span>
+  }
+
+  public int numberOfCourses()
+  {
+<span class="fc" id="L47">    int number = courses.size();</span>
+<span class="fc" id="L48">    return number;</span>
+  }
+
+  public boolean hasCourses()
+  {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">    boolean has = courses.size() &gt; 0;</span>
+<span class="nc" id="L54">    return has;</span>
+  }
+
+  public int indexOfCourse(Course aCourse)
+  {
+<span class="nc" id="L59">    int index = courses.indexOf(aCourse);</span>
+<span class="nc" id="L60">    return index;</span>
+  }
+
+  public User getUser(int index)
+  {
+<span class="fc" id="L65">    User aUser = users.get(index);</span>
+<span class="fc" id="L66">    return aUser;</span>
+  }
+
+  /**
+   * We will want to ensure in our controller that we have atleast 1 user - if not make a default admin user.
+   */
+  public List&lt;User&gt; getUsers()
+  {
+<span class="fc" id="L74">    List&lt;User&gt; newUsers = Collections.unmodifiableList(users);</span>
+<span class="fc" id="L75">    return newUsers;</span>
+  }
+
+  public int numberOfUsers()
+  {
+<span class="fc" id="L80">    int number = users.size();</span>
+<span class="fc" id="L81">    return number;</span>
+  }
+
+  public boolean hasUsers()
+  {
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">    boolean has = users.size() &gt; 0;</span>
+<span class="fc" id="L87">    return has;</span>
+  }
+
+  public int indexOfUser(User aUser)
+  {
+<span class="nc" id="L92">    int index = users.indexOf(aUser);</span>
+<span class="nc" id="L93">    return index;</span>
+  }
+
+  public static int minimumNumberOfCourses()
+  {
+<span class="nc" id="L98">    return 0;</span>
+  }
+
+  public Course addCourse(String aName, double aBudget, int aStudentsEnrolled, int aCredits, int aHours, int aTutorialCount, int aLabCount)
+  {
+<span class="fc" id="L103">    return new Course(aName, aBudget, aStudentsEnrolled, aCredits, aHours, aTutorialCount, aLabCount, this);</span>
+  }
+
+  public boolean addCourse(Course aCourse)
+  {
+<span class="fc" id="L108">    boolean wasAdded = false;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">    if (courses.contains(aCourse)) { return false; }</span>
+<span class="fc" id="L110">    Tamas existingTamas = aCourse.getTamas();</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">    boolean isNewTamas = existingTamas != null &amp;&amp; !this.equals(existingTamas);</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">    if (isNewTamas)</span>
+    {
+<span class="nc" id="L114">      aCourse.setTamas(this);</span>
+<span class="nc" id="L115">    }</span>
+    else
+    {
+<span class="fc" id="L118">      courses.add(aCourse);</span>
+    }
+<span class="fc" id="L120">    wasAdded = true;</span>
+<span class="fc" id="L121">    return wasAdded;</span>
+  }
+
+  public boolean removeCourse(Course aCourse)
+  {
+<span class="fc" id="L126">    boolean wasRemoved = false;</span>
+    //Unable to remove aCourse, as it must always have a tamas
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">    if (!this.equals(aCourse.getTamas()))</span>
+    {
+<span class="fc" id="L130">      courses.remove(aCourse);</span>
+<span class="fc" id="L131">      wasRemoved = true;</span>
+    }
+<span class="fc" id="L133">    return wasRemoved;</span>
+  }
+
+  public boolean addCourseAt(Course aCourse, int index)
+  {  
+<span class="nc" id="L138">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">    if(addCourse(aCourse))</span>
+    {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">      if(index &gt; numberOfCourses()) { index = numberOfCourses() - 1; }</span>
+<span class="nc" id="L143">      courses.remove(aCourse);</span>
+<span class="nc" id="L144">      courses.add(index, aCourse);</span>
+<span class="nc" id="L145">      wasAdded = true;</span>
+    }
+<span class="nc" id="L147">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveCourseAt(Course aCourse, int index)
+  {
+<span class="fc" id="L152">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">    if(courses.contains(aCourse))</span>
+    {
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">      if(index &gt; numberOfCourses()) { index = numberOfCourses() - 1; }</span>
+<span class="fc" id="L157">      courses.remove(aCourse);</span>
+<span class="fc" id="L158">      courses.add(index, aCourse);</span>
+<span class="fc" id="L159">      wasAdded = true;</span>
+<span class="fc" id="L160">    } </span>
+    else 
+    {
+<span class="nc" id="L163">      wasAdded = addCourseAt(aCourse, index);</span>
+    }
+<span class="fc" id="L165">    return wasAdded;</span>
+  }
+
+  public static int minimumNumberOfUsers()
+  {
+<span class="nc" id="L170">    return 0;</span>
+  }
+
+  public boolean addUser(User aUser)
+  {
+<span class="fc" id="L175">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">    if (users.contains(aUser)) { return false; }</span>
+<span class="fc" id="L177">    Tamas existingTamas = aUser.getTamas();</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">    if (existingTamas == null)</span>
+    {
+<span class="fc" id="L180">      aUser.setTamas(this);</span>
+<span class="fc" id="L181">    }</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">    else if (!this.equals(existingTamas))</span>
+    {
+<span class="nc" id="L184">      existingTamas.removeUser(aUser);</span>
+<span class="nc" id="L185">      addUser(aUser);</span>
+<span class="nc" id="L186">    }</span>
+    else
+    {
+<span class="fc" id="L189">      users.add(aUser);</span>
+    }
+<span class="fc" id="L191">    wasAdded = true;</span>
+<span class="fc" id="L192">    return wasAdded;</span>
+  }
+
+  public boolean removeUser(User aUser)
+  {
+<span class="fc" id="L197">    boolean wasRemoved = false;</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">    if (users.contains(aUser))</span>
+    {
+<span class="fc" id="L200">      users.remove(aUser);</span>
+<span class="fc" id="L201">      aUser.setTamas(null);</span>
+<span class="fc" id="L202">      wasRemoved = true;</span>
+    }
+<span class="fc" id="L204">    return wasRemoved;</span>
+  }
+
+  public boolean addUserAt(User aUser, int index)
+  {  
+<span class="nc" id="L209">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">    if(addUser(aUser))</span>
+    {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">      if(index &gt; numberOfUsers()) { index = numberOfUsers() - 1; }</span>
+<span class="nc" id="L214">      users.remove(aUser);</span>
+<span class="nc" id="L215">      users.add(index, aUser);</span>
+<span class="nc" id="L216">      wasAdded = true;</span>
+    }
+<span class="nc" id="L218">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveUserAt(User aUser, int index)
+  {
+<span class="fc" id="L223">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">    if(users.contains(aUser))</span>
+    {
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">      if(index &gt; numberOfUsers()) { index = numberOfUsers() - 1; }</span>
+<span class="fc" id="L228">      users.remove(aUser);</span>
+<span class="fc" id="L229">      users.add(index, aUser);</span>
+<span class="fc" id="L230">      wasAdded = true;</span>
+<span class="fc" id="L231">    } </span>
+    else 
+    {
+<span class="nc" id="L234">      wasAdded = addUserAt(aUser, index);</span>
+    }
+<span class="fc" id="L236">    return wasAdded;</span>
+  }
+
+  public void delete()
+  {
+<span class="fc bfc" id="L241" title="All 2 branches covered.">    while (courses.size() &gt; 0)</span>
+    {
+<span class="fc" id="L243">      Course aCourse = courses.get(courses.size() - 1);</span>
+<span class="fc" id="L244">      aCourse.delete();</span>
+<span class="fc" id="L245">      courses.remove(aCourse);</span>
+    }
+    
+<span class="fc bfc" id="L248" title="All 2 branches covered.">    while (users.size() &gt; 0)</span>
+    {
+<span class="fc" id="L250">      User aUser = users.get(users.size() - 1);</span>
+<span class="fc" id="L251">      aUser.delete();</span>
+<span class="fc" id="L252">      users.remove(aUser);</span>
+    }
+    
+<span class="fc" id="L255">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

@@ -1,0 +1,34 @@
+<?php
+require_once 'controller/Controller.php';
+
+session_start();
+
+$c = new Controller();
+try {
+	$coursename = NULL;
+	if(isset($_POST['mainPageCourse'])) {
+		$coursename = $_POST['mainPageCourse'];
+	}
+	
+	$coursehours = NULL;
+	if(isset($_POST['mainPageCourseHours'])) {
+		$coursehours = $_POST['mainPageCourseHours'];
+	}
+	
+	$labsessions = NULL;
+	if(isset($_POST['jobpostingdescription'])) {
+		$labsessions = $_POST['jobpostingdescription'];
+	}
+	
+	$c->createJobPosting($course, $jobtitle, $description);
+} catch (Exception $e) {
+	$errors = explode("@", $e->getMessage());
+}
+?>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="refresh" content="0; url=/TAMASWeb/mainpage.php" />
+	</head>
+</html>

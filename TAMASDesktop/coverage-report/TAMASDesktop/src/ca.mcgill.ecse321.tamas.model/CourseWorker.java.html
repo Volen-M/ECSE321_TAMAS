@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>CourseWorker.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">CourseWorker.java</span></div><h1>CourseWorker.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/*PLEASE DO NOT EDIT THIS CODE*/</span>
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+import java.util.*;
+
+// line 54 &quot;../../../../../Model.ump&quot;
+public class CourseWorker extends User
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //CourseWorker Attributes
+  private int hoursOfWorkAllocated;
+  private int mcgillID;
+  private String pastWorkerExperience;
+
+  //CourseWorker State Machines
+<span class="fc" id="L21">  public enum AcademicStatus { UNDERGRADUATE, GRADUATE }</span>
+  private AcademicStatus academicStatus;
+
+  //CourseWorker Associations
+  private List&lt;JobApplication&gt; jobApplications;
+  private List&lt;Evaluation&gt; evals;
+  private Job job;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public CourseWorker(String aUsername, String aName, int aHoursOfWorkAllocated, int aMcgillID, String aPastWorkerExperience)
+  {
+<span class="fc" id="L35">    super(aUsername, aName);</span>
+<span class="fc" id="L36">    hoursOfWorkAllocated = aHoursOfWorkAllocated;</span>
+<span class="fc" id="L37">    mcgillID = aMcgillID;</span>
+<span class="fc" id="L38">    pastWorkerExperience = aPastWorkerExperience;</span>
+<span class="fc" id="L39">    jobApplications = new ArrayList&lt;JobApplication&gt;();</span>
+<span class="fc" id="L40">    evals = new ArrayList&lt;Evaluation&gt;();</span>
+<span class="fc" id="L41">    setAcademicStatus(AcademicStatus.UNDERGRADUATE);</span>
+<span class="fc" id="L42">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setHoursOfWorkAllocated(int aHoursOfWorkAllocated)
+  {
+<span class="nc" id="L50">    boolean wasSet = false;</span>
+<span class="nc" id="L51">    hoursOfWorkAllocated = aHoursOfWorkAllocated;</span>
+<span class="nc" id="L52">    wasSet = true;</span>
+<span class="nc" id="L53">    return wasSet;</span>
+  }
+
+  public boolean setMcgillID(int aMcgillID)
+  {
+<span class="fc" id="L58">    boolean wasSet = false;</span>
+<span class="fc" id="L59">    mcgillID = aMcgillID;</span>
+<span class="fc" id="L60">    wasSet = true;</span>
+<span class="fc" id="L61">    return wasSet;</span>
+  }
+
+  public boolean setPastWorkerExperience(String aPastWorkerExperience)
+  {
+<span class="fc" id="L66">    boolean wasSet = false;</span>
+<span class="fc" id="L67">    pastWorkerExperience = aPastWorkerExperience;</span>
+<span class="fc" id="L68">    wasSet = true;</span>
+<span class="fc" id="L69">    return wasSet;</span>
+  }
+
+  public int getHoursOfWorkAllocated()
+  {
+<span class="fc" id="L74">    return hoursOfWorkAllocated;</span>
+  }
+
+  public int getMcgillID()
+  {
+<span class="fc" id="L79">    return mcgillID;</span>
+  }
+
+  public String getPastWorkerExperience()
+  {
+<span class="fc" id="L84">    return pastWorkerExperience;</span>
+  }
+
+  public String getAcademicStatusFullName()
+  {
+<span class="nc" id="L89">    String answer = academicStatus.toString();</span>
+<span class="nc" id="L90">    return answer;</span>
+  }
+
+  public AcademicStatus getAcademicStatus()
+  {
+<span class="fc" id="L95">    return academicStatus;</span>
+  }
+
+  public boolean setAcademicStatus(AcademicStatus aAcademicStatus)
+  {
+<span class="fc" id="L100">    academicStatus = aAcademicStatus;</span>
+<span class="fc" id="L101">    return true;</span>
+  }
+
+  public JobApplication getJobApplication(int index)
+  {
+<span class="fc" id="L106">    JobApplication aJobApplication = jobApplications.get(index);</span>
+<span class="fc" id="L107">    return aJobApplication;</span>
+  }
+
+  /**
+   * Maximum of 3 job applications.
+   */
+  public List&lt;JobApplication&gt; getJobApplications()
+  {
+<span class="fc" id="L115">    List&lt;JobApplication&gt; newJobApplications = Collections.unmodifiableList(jobApplications);</span>
+<span class="fc" id="L116">    return newJobApplications;</span>
+  }
+
+  public int numberOfJobApplications()
+  {
+<span class="fc" id="L121">    int number = jobApplications.size();</span>
+<span class="fc" id="L122">    return number;</span>
+  }
+
+  public boolean hasJobApplications()
+  {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">    boolean has = jobApplications.size() &gt; 0;</span>
+<span class="nc" id="L128">    return has;</span>
+  }
+
+  public int indexOfJobApplication(JobApplication aJobApplication)
+  {
+<span class="nc" id="L133">    int index = jobApplications.indexOf(aJobApplication);</span>
+<span class="nc" id="L134">    return index;</span>
+  }
+
+  public Evaluation getEval(int index)
+  {
+<span class="fc" id="L139">    Evaluation aEval = evals.get(index);</span>
+<span class="fc" id="L140">    return aEval;</span>
+  }
+
+  public List&lt;Evaluation&gt; getEvals()
+  {
+<span class="fc" id="L145">    List&lt;Evaluation&gt; newEvals = Collections.unmodifiableList(evals);</span>
+<span class="fc" id="L146">    return newEvals;</span>
+  }
+
+  public int numberOfEvals()
+  {
+<span class="fc" id="L151">    int number = evals.size();</span>
+<span class="fc" id="L152">    return number;</span>
+  }
+
+  public boolean hasEvals()
+  {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">    boolean has = evals.size() &gt; 0;</span>
+<span class="nc" id="L158">    return has;</span>
+  }
+
+  public int indexOfEval(Evaluation aEval)
+  {
+<span class="nc" id="L163">    int index = evals.indexOf(aEval);</span>
+<span class="nc" id="L164">    return index;</span>
+  }
+
+  public Job getJob()
+  {
+<span class="fc" id="L169">    return job;</span>
+  }
+
+  public boolean hasJob()
+  {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">    boolean has = job != null;</span>
+<span class="nc" id="L175">    return has;</span>
+  }
+
+  public static int minimumNumberOfJobApplications()
+  {
+<span class="nc" id="L180">    return 0;</span>
+  }
+
+  public static int maximumNumberOfJobApplications()
+  {
+<span class="fc" id="L185">    return 3;</span>
+  }
+
+  public boolean addJobApplication(JobApplication aJobApplication)
+  {
+<span class="fc" id="L190">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">    if (jobApplications.contains(aJobApplication)) { return false; }</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">    if (numberOfJobApplications() &lt; maximumNumberOfJobApplications())</span>
+    {
+<span class="fc" id="L194">      jobApplications.add(aJobApplication);</span>
+<span class="fc" id="L195">      wasAdded = true;</span>
+    }
+<span class="fc" id="L197">    return wasAdded;</span>
+  }
+
+  public boolean removeJobApplication(JobApplication aJobApplication)
+  {
+<span class="nc" id="L202">    boolean wasRemoved = false;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">    if (jobApplications.contains(aJobApplication))</span>
+    {
+<span class="nc" id="L205">      jobApplications.remove(aJobApplication);</span>
+<span class="nc" id="L206">      wasRemoved = true;</span>
+    }
+<span class="nc" id="L208">    return wasRemoved;</span>
+  }
+
+  public boolean setJobApplications(JobApplication... newJobApplications)
+  {
+<span class="fc" id="L213">    boolean wasSet = false;</span>
+<span class="fc" id="L214">    ArrayList&lt;JobApplication&gt; verifiedJobApplications = new ArrayList&lt;JobApplication&gt;();</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">    for (JobApplication aJobApplication : newJobApplications)</span>
+    {
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">      if (verifiedJobApplications.contains(aJobApplication))</span>
+      {
+<span class="nc" id="L219">        continue;</span>
+      }
+<span class="fc" id="L221">      verifiedJobApplications.add(aJobApplication);</span>
+    }
+
+<span class="pc bpc" id="L224" title="2 of 4 branches missed.">    if (verifiedJobApplications.size() != newJobApplications.length || verifiedJobApplications.size() &gt; maximumNumberOfJobApplications())</span>
+    {
+<span class="nc" id="L226">      return wasSet;</span>
+    }
+
+<span class="fc" id="L229">    jobApplications.clear();</span>
+<span class="fc" id="L230">    jobApplications.addAll(verifiedJobApplications);</span>
+<span class="fc" id="L231">    wasSet = true;</span>
+<span class="fc" id="L232">    return wasSet;</span>
+  }
+
+  public boolean addJobApplicationAt(JobApplication aJobApplication, int index)
+  {  
+<span class="nc" id="L237">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">    if(addJobApplication(aJobApplication))</span>
+    {
+<span class="nc bnc" id="L240" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">      if(index &gt; numberOfJobApplications()) { index = numberOfJobApplications() - 1; }</span>
+<span class="nc" id="L242">      jobApplications.remove(aJobApplication);</span>
+<span class="nc" id="L243">      jobApplications.add(index, aJobApplication);</span>
+<span class="nc" id="L244">      wasAdded = true;</span>
+    }
+<span class="nc" id="L246">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveJobApplicationAt(JobApplication aJobApplication, int index)
+  {
+<span class="fc" id="L251">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">    if(jobApplications.contains(aJobApplication))</span>
+    {
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">      if(index &gt; numberOfJobApplications()) { index = numberOfJobApplications() - 1; }</span>
+<span class="fc" id="L256">      jobApplications.remove(aJobApplication);</span>
+<span class="fc" id="L257">      jobApplications.add(index, aJobApplication);</span>
+<span class="fc" id="L258">      wasAdded = true;</span>
+<span class="fc" id="L259">    } </span>
+    else 
+    {
+<span class="nc" id="L262">      wasAdded = addJobApplicationAt(aJobApplication, index);</span>
+    }
+<span class="fc" id="L264">    return wasAdded;</span>
+  }
+
+  public static int minimumNumberOfEvals()
+  {
+<span class="nc" id="L269">    return 0;</span>
+  }
+
+  public boolean addEval(Evaluation aEval)
+  {
+<span class="fc" id="L274">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">    if (evals.contains(aEval)) { return false; }</span>
+<span class="fc" id="L276">    evals.add(aEval);</span>
+<span class="fc" id="L277">    wasAdded = true;</span>
+<span class="fc" id="L278">    return wasAdded;</span>
+  }
+
+  public boolean removeEval(Evaluation aEval)
+  {
+<span class="nc" id="L283">    boolean wasRemoved = false;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">    if (evals.contains(aEval))</span>
+    {
+<span class="nc" id="L286">      evals.remove(aEval);</span>
+<span class="nc" id="L287">      wasRemoved = true;</span>
+    }
+<span class="nc" id="L289">    return wasRemoved;</span>
+  }
+
+  public boolean addEvalAt(Evaluation aEval, int index)
+  {  
+<span class="nc" id="L294">    boolean wasAdded = false;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">    if(addEval(aEval))</span>
+    {
+<span class="nc bnc" id="L297" title="All 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">      if(index &gt; numberOfEvals()) { index = numberOfEvals() - 1; }</span>
+<span class="nc" id="L299">      evals.remove(aEval);</span>
+<span class="nc" id="L300">      evals.add(index, aEval);</span>
+<span class="nc" id="L301">      wasAdded = true;</span>
+    }
+<span class="nc" id="L303">    return wasAdded;</span>
+  }
+
+  public boolean addOrMoveEvalAt(Evaluation aEval, int index)
+  {
+<span class="fc" id="L308">    boolean wasAdded = false;</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">    if(evals.contains(aEval))</span>
+    {
+<span class="pc bpc" id="L311" title="1 of 2 branches missed.">      if(index &lt; 0 ) { index = 0; }</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">      if(index &gt; numberOfEvals()) { index = numberOfEvals() - 1; }</span>
+<span class="fc" id="L313">      evals.remove(aEval);</span>
+<span class="fc" id="L314">      evals.add(index, aEval);</span>
+<span class="fc" id="L315">      wasAdded = true;</span>
+<span class="fc" id="L316">    } </span>
+    else 
+    {
+<span class="nc" id="L319">      wasAdded = addEvalAt(aEval, index);</span>
+    }
+<span class="fc" id="L321">    return wasAdded;</span>
+  }
+
+  public boolean setJob(Job aNewJob)
+  {
+<span class="fc" id="L326">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">    if (aNewJob == null)</span>
+    {
+<span class="nc" id="L329">      Job existingJob = job;</span>
+<span class="nc" id="L330">      job = null;</span>
+      
+<span class="nc bnc" id="L332" title="All 4 branches missed.">      if (existingJob != null &amp;&amp; existingJob.getAllocatedWorker() != null)</span>
+      {
+<span class="nc" id="L334">        existingJob.setAllocatedWorker(null);</span>
+      }
+<span class="nc" id="L336">      wasSet = true;</span>
+<span class="nc" id="L337">      return wasSet;</span>
+    }
+
+<span class="fc" id="L340">    Job currentJob = getJob();</span>
+<span class="pc bpc" id="L341" title="3 of 4 branches missed.">    if (currentJob != null &amp;&amp; !currentJob.equals(aNewJob))</span>
+    {
+<span class="nc" id="L343">      currentJob.setAllocatedWorker(null);</span>
+    }
+
+<span class="fc" id="L346">    job = aNewJob;</span>
+<span class="fc" id="L347">    CourseWorker existingAllocatedWorker = aNewJob.getAllocatedWorker();</span>
+
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">    if (!equals(existingAllocatedWorker))</span>
+    {
+<span class="nc" id="L351">      aNewJob.setAllocatedWorker(this);</span>
+    }
+<span class="fc" id="L353">    wasSet = true;</span>
+<span class="fc" id="L354">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="fc" id="L359">    jobApplications.clear();</span>
+<span class="fc" id="L360">    evals.clear();</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">    if (job != null)</span>
+    {
+<span class="nc" id="L363">      job.setAllocatedWorker(null);</span>
+    }
+<span class="fc" id="L365">    super.delete();</span>
+<span class="fc" id="L366">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L371">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L372">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L373">            &quot;hoursOfWorkAllocated&quot; + &quot;:&quot; + getHoursOfWorkAllocated()+ &quot;,&quot; +</span>
+<span class="fc" id="L374">            &quot;mcgillID&quot; + &quot;:&quot; + getMcgillID()+ &quot;,&quot; +</span>
+<span class="fc" id="L375">            &quot;pastWorkerExperience&quot; + &quot;:&quot; + getPastWorkerExperience()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;job = &quot;+(getJob()!=null?Integer.toHexString(System.identityHashCode(getJob())):&quot;null&quot;)</span>
+<span class="fc" id="L377">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

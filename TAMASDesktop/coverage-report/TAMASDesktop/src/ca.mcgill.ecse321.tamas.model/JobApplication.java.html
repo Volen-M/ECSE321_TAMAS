@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>JobApplication.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.model</a> &gt; <span class="el_source">JobApplication.java</span></div><h1>JobApplication.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/*PLEASE DO NOT EDIT THIS CODE*/</span>
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.model;
+import java.sql.Date;
+import java.sql.Time;
+
+// line 32 &quot;../../../../../Model.ump&quot;
+public class JobApplication
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //JobApplication Attributes
+  private Date applicationDate;
+  private Time applicationTime;
+  private int rank;
+
+  //JobApplication State Machines
+<span class="fc" id="L22">  public enum ApplicationStatus { APPLIED, APPROVED, OFFER, ACCEPTED, REJECTED }</span>
+  private ApplicationStatus applicationStatus;
+
+  //JobApplication Associations
+  private CourseWorker worker;
+  private Job job;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L33">  public JobApplication(Date aApplicationDate, Time aApplicationTime, int aRank, CourseWorker aWorker, Job aJob)</span>
+  {
+<span class="fc" id="L35">    applicationDate = aApplicationDate;</span>
+<span class="fc" id="L36">    applicationTime = aApplicationTime;</span>
+<span class="fc" id="L37">    rank = aRank;</span>
+    
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">    if (!setWorker(aWorker))</span>
+    {
+<span class="nc" id="L41">      throw new RuntimeException(&quot;Unable to create JobApplication due to aWorker&quot;);</span>
+    }
+<span class="fc" id="L43">    boolean didAddJob = setJob(aJob);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">    if (!didAddJob)</span>
+    {
+<span class="nc" id="L46">      throw new RuntimeException(&quot;Unable to create jobApplication due to job&quot;);</span>
+    }
+<span class="fc" id="L48">    setApplicationStatus(ApplicationStatus.APPLIED);</span>
+<span class="fc" id="L49">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setApplicationDate(Date aApplicationDate)
+  {
+<span class="nc" id="L57">    boolean wasSet = false;</span>
+<span class="nc" id="L58">    applicationDate = aApplicationDate;</span>
+<span class="nc" id="L59">    wasSet = true;</span>
+<span class="nc" id="L60">    return wasSet;</span>
+  }
+
+  public boolean setApplicationTime(Time aApplicationTime)
+  {
+<span class="nc" id="L65">    boolean wasSet = false;</span>
+<span class="nc" id="L66">    applicationTime = aApplicationTime;</span>
+<span class="nc" id="L67">    wasSet = true;</span>
+<span class="nc" id="L68">    return wasSet;</span>
+  }
+
+  public boolean setRank(int aRank)
+  {
+<span class="nc" id="L73">    boolean wasSet = false;</span>
+<span class="nc" id="L74">    rank = aRank;</span>
+<span class="nc" id="L75">    wasSet = true;</span>
+<span class="nc" id="L76">    return wasSet;</span>
+  }
+
+  public Date getApplicationDate()
+  {
+<span class="fc" id="L81">    return applicationDate;</span>
+  }
+
+  public Time getApplicationTime()
+  {
+<span class="fc" id="L86">    return applicationTime;</span>
+  }
+
+  /**
+   * This is the preference number given by a TA/Grader for this job.
+   */
+  public int getRank()
+  {
+<span class="fc" id="L94">    return rank;</span>
+  }
+
+  public String getApplicationStatusFullName()
+  {
+<span class="nc" id="L99">    String answer = applicationStatus.toString();</span>
+<span class="nc" id="L100">    return answer;</span>
+  }
+
+  public ApplicationStatus getApplicationStatus()
+  {
+<span class="nc" id="L105">    return applicationStatus;</span>
+  }
+
+  public boolean setApplicationStatus(ApplicationStatus aApplicationStatus)
+  {
+<span class="fc" id="L110">    applicationStatus = aApplicationStatus;</span>
+<span class="fc" id="L111">    return true;</span>
+  }
+
+  public CourseWorker getWorker()
+  {
+<span class="fc" id="L116">    return worker;</span>
+  }
+
+  public Job getJob()
+  {
+<span class="fc" id="L121">    return job;</span>
+  }
+
+  public boolean setWorker(CourseWorker aNewWorker)
+  {
+<span class="fc" id="L126">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">    if (aNewWorker != null)</span>
+    {
+<span class="fc" id="L129">      worker = aNewWorker;</span>
+<span class="fc" id="L130">      wasSet = true;</span>
+    }
+<span class="fc" id="L132">    return wasSet;</span>
+  }
+
+  public boolean setJob(Job aJob)
+  {
+<span class="fc" id="L137">    boolean wasSet = false;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">    if (aJob == null)</span>
+    {
+<span class="nc" id="L140">      return wasSet;</span>
+    }
+
+<span class="fc" id="L143">    Job existingJob = job;</span>
+<span class="fc" id="L144">    job = aJob;</span>
+<span class="pc bpc" id="L145" title="3 of 4 branches missed.">    if (existingJob != null &amp;&amp; !existingJob.equals(aJob))</span>
+    {
+<span class="nc" id="L147">      existingJob.removeJobApplication(this);</span>
+    }
+<span class="fc" id="L149">    job.addJobApplication(this);</span>
+<span class="fc" id="L150">    wasSet = true;</span>
+<span class="fc" id="L151">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="fc" id="L156">    worker = null;</span>
+<span class="fc" id="L157">    Job placeholderJob = job;</span>
+<span class="fc" id="L158">    this.job = null;</span>
+<span class="fc" id="L159">    placeholderJob.removeJobApplication(this);</span>
+<span class="fc" id="L160">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L165">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L166">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L167">            &quot;rank&quot; + &quot;:&quot; + getRank()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;applicationDate&quot; + &quot;=&quot; + (getApplicationDate() != null ? !getApplicationDate().equals(this)  ? getApplicationDate().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">            &quot;  &quot; + &quot;applicationTime&quot; + &quot;=&quot; + (getApplicationTime() != null ? !getApplicationTime().equals(this)  ? getApplicationTime().toString().replaceAll(&quot;  &quot;,&quot;    &quot;) : &quot;this&quot; : &quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;worker = &quot;+(getWorker()!=null?Integer.toHexString(System.identityHashCode(getWorker())):&quot;null&quot;) + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;job = &quot;+(getJob()!=null?Integer.toHexString(System.identityHashCode(getJob())):&quot;null&quot;)</span>
+<span class="fc" id="L172">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>

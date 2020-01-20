@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<link rel='shortcut icon' href='favicon.ico' type='image/x-icon'>
+<title>Teaching Assistant Management System Main Page</title>
+<style>
+.error {color: #FF0000;}
+
+input[type=text], select {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+input[type=password], select {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+textarea {
+	resize: none;
+	width: 98%;
+}
+
+input[type=submit] {
+	width: 100%;
+	background-color: #4C8BAF;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #4CA0AF;
+}
+
+button[type=button] {
+	width: 100%;
+	background-color: #4C8BAF;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+button[type=button]:hover {
+	background-color: #4CA0AF;
+}
+
+div {
+	border-radius: 5px;
+	background-color: #f2f2f2;
+	padding: 20px;
+}
+</style>
+</head>
+<body style='font-family: Arial;'>
+<div style='margin: auto;
+                    display: block;
+                    width: 300px;'>
+                    <?php
+                    require_once 'authentication/Authentication.php';
+                    require_once 'controller/Controller.php';
+                    require_once 'model/JobApplication.php';
+                
+
+                    use \ca\mcgill\ecse321\tamas\web\controller\Controller;
+                    use \ca\mcgill\ecse321\tamas\web\authentication\Authentication;
+					//use ca\mcgill\ecse321\tamas\web\persistence\Persistence;
+
+                    session_start();
+
+                    Controller::loadAuthentication();
+                    Controller::loadModel();
+                    
+                    //$pm = new Persistence(); 
+                   // $tamas = $pm -> loadDataFromStore(); 
+
+                    $users = Controller::getAuthenticationUsers();
+                    foreach ($users as $user) {
+                    	if($user->getUsername() === $_GET["username"]) {
+                    		Controller::setCurrentUser($user);
+                    	}
+                    }
+                    
+
+                    if(Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\CourseWorker){?>
+			
+			
+            <form action='addjobapplication.php' method=post id='postjobform'>
+  					
+  					<p> <strong>For CourseWorker</strong><p>
+                	<p><strong> Course List</strong><p>
+             
+                   	<select>
+						<!--  <option value='opt1'></option>-->
+						<?php
+						foreach ($tamas -> getCourse() as $Course) {
+						echo $Course->getName().'</option>';
+						}
+						?>
+				    </select>
+                    <p> <button type='button'>Load Job List</button></p>
+    				
+    			<?php/* This is commented out because it wont be needed for this user
+                <p>Course Title: <span><input type=text name='mainPageCourseTitle'></span>
+            	<span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageCourseTitle']) && !empty($_SESSION['errormainPageCourseTitle'])) {
+						echo " * " . $_SESSION["errormainPageCourseTitle"];
+					}
+					?>
+				</span></p>
+                
+                <p>Amount of Course hours: <span><input type=text name='mainPageCourseHours'></span>
+                
+           	    <span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageCourseHours']) && !empty($_SESSION['errormainPageCourseHours'])) {
+						echo " * " . $_SESSION["errormainPageCourseHours"];
+					}
+					?>
+				</span></p>
+                <p>Amount of Lab Sessions: <span><input type=text name='mainPageLabSessions'></span>
+           		<span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageLabSessions']) && !empty($_SESSION['errormainPageLabSessions'])) {
+						echo " * " . $_SESSION["errormainPageLabSessions"];
+					}
+					?>
+				</span></p>
+            
+                <p>Amount of Tutorial Sessions: <span><input type=text name='mainPageTutorialSessions'></span>
+             	<span class="error">   
+            		<?php
+					if (isset($_SESSION['errormainPageLabSessions']) && !empty($_SESSION['errormainPageLabSessions'])) {
+						echo " * " . $_SESSION["errormainPageLabSessions"];
+					}
+					?>
+				</span></p>
+
+                <p>Amount of Enrolled Students: <span><input type=text name='mainPageEnrolledStudents'></span>
+             	<span class="error">   
+            		<?php
+					if (isset($_SESSION['errormainPageEnrolledStudents']) && !empty($_SESSION['errormainPageEnrolledStudents'])) {
+						echo " * " . $_SESSION["errormainPageEnrolledStudents"];
+					}
+					?>
+				</span></p> 
+				*/?>               
+                    
+                <p> <strong>Job List</strong></p>
+                   <select>
+  						<?php
+						foreach ($tamas -> getJob() as $Job) {
+						echo $Job->getName().'</option>';
+						}
+						?>
+				   </select>
+                 <p> <button type='button' name ='Job'>Load Job</button></p>
+                
+               	 <p>Job Title: <span><input type='text' name='mainPageJobTitle'></span></p>
+
+                 <label for='jobpostingdescription'>Job Description:</label>
+                 <textarea rows='4' cols='50' name='jobpostingdescription' placeholder='Enter job description here...' form='postjobform'></textarea>
+
+                
+                
+                 <p> <strong>Application Deadline Information:</strong> <p> 
+               
+              
+                 <p>Application Deadline Date: <input type='date' name='Date'>
+                 <span class="error">
+                     <?php
+						if (isset($_SESSION['errorDate']) && !empty($_SESSION['errorDate'])) {
+						 echo " * " . $_SESSION["errorDate"];
+					}
+					?>
+				</span></p>
+               	<p> Application Deadline Time: <input type='time' name='Time'> 
+               	<span class="error">
+                    <?php
+					    if (isset($_SESSION['errorTime']) && !empty($_SESSION['errorTime'])) {
+						echo " * " . $_SESSION["errorTime"];
+					}
+					?>
+				</span></p>
+   				
+                <?php/* This is commented out because it wont be needed for this user
+                
+                <p> Job information </p> 
+                
+                
+                <p> Work Start Time <input type='time' name='Time1'>  
+                <span class="error">
+                     <?php
+						if (isset($_SESSION['errorTime1']) && !empty($_SESSION['errorTime1'])) {
+						echo " * " . $_SESSION["errorTime1"];
+					}
+					?>
+				</span></p>
+                <p> Work End Time<input type='time' name='Time2'>
+                <span class="error">
+                     <?php
+						if (isset($_SESSION['errorTime2']) && !empty($_SESSION['errorTime2'])) {
+						echo " * " . $_SESSION["errorTime2"];
+					}
+					?>
+				</span></p>
+				
+				*/?>
+               
+           		<p> Working Days </p> 
+                  <input type='checkbox' > Monday 
+  				  <input type='checkbox'> Tuesday 
+                  <input type='checkbox' > Wednesday 
+  				  <input type='checkbox'> Thursday  
+				  <input type='checkbox' > Friday 
+                   
+                <p>Total Worked Hours per week: <span><input type='text' name='mainPageWorkedHours'></span></p>
+ 				<?php/* This is commented out because it wont be needed for this user
+                  <input type='radio' name='position' > Grader 
+  				  <input type='radio' name='position'> Teaching Assistant
+                  <input type='radio' name='position'> Lab Technician 
+                 */?>
+                  
+				
+				<p> Ranking </p>
+		          <input type='radio' name='rank' >1 
+  				  <input type='radio' name='rank'> 2
+                  <input type='radio' name='rank'> 3  
+				
+                <p> <strong>Profile Description</strong> <textarea rows='4' cols='50' name='profiledescription' placeholder='Enter profile description here...' form='postjobform'></textarea></p> 
+                
+                <p> Education level <p> 
+                  <input type='radio' name='educ' > Graduate 
+  				  <input type='radio' name='educ'> Undergraduate
+                  
+                <p> <button type='button' name= 'apply'>Apply to Job</button></p>
+                <p> <button type='button'>Accept Job offer</button></p>
+                <p> <button type='button'>Decline Job offer</button></p>
+                    
+                
+            	</form>
+				
+<?php    		
+} else if (Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\Instructor) {
+ ?>
+
+            <form action='addjobposting.php' method='post' id='postjobform'>
+            
+             <p> <strong>For Instructor</strong><p>
+            	
+                <?php/* This is commented out because it wont be needed for this user   
+                <p> <strong>Course List</strong><p>
+                   <select>
+						<option value='opt1'>opt1</option>
+				    </select>
+                <p> <button type='button'>Load Job List</button></p>
+                
+                */?>
+                <p>Course Title: <span><input type=text name='mainPageCourseTitle'></span>
+            	<span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageCourseTitle']) && !empty($_SESSION['errormainPageCourseTitle'])) {
+						echo " * " . $_SESSION["errormainPageCourseTitle"];
+					}
+					?>
+				</span></p>
+                
+                <p>Amount of Course hours: <span><input type=text name='mainPageCourseHours'></span>
+                
+           	    <span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageCourseHours']) && !empty($_SESSION['errormainPageCourseHours'])) {
+						echo " * " . $_SESSION["errormainPageCourseHours"];
+					}
+					?>
+				</span></p>
+                <p>Amount of Lab Sessions: <span><input type=text name='mainPageLabSessions'></span>
+           		<span class="error">
+					<?php
+					if (isset($_SESSION['errormainPageLabSessions']) && !empty($_SESSION['errormainPageLabSessions'])) {
+						echo " * " . $_SESSION["errormainPageLabSessions"];
+					}
+					?>
+				</span></p>
+            
+                <p>Amount of Tutorial Sessions: <span><input type=text name='mainPageTutorialSessions'></span>
+             	<span class="error">   
+            		<?php
+					if (isset($_SESSION['errormainPageLabSessions']) && !empty($_SESSION['errormainPageLabSessions'])) {
+						echo " * " . $_SESSION["errormainPageLabSessions"];
+					}
+					?>
+				</span></p>
+
+                <p>Amount of Enrolled Students: <span><input type=text name='mainPageEnrolledStudents'></span>
+             	<span class="error">   
+            		<?php
+					if (isset($_SESSION['errormainPageEnrolledStudents']) && !empty($_SESSION['errormainPageEnrolledStudents'])) {
+						echo " * " . $_SESSION["errormainPageEnrolledStudents"];
+					}
+					?>
+				</span></p> 
+                 
+                 <?php/* This is commented out because it wont be needed for this user
+                <p> <strong>Job List</strong><p>
+                   <select>
+  						<option value='opt1'>opt1</option>
+				   </select>
+                <p> <button type='button'>Load Job</button></p>
+                */?>
+                <p>Job Title: <span><input type='text' name='mainPageJobTitle'></span></p>
+                
+   
+                
+                <label for='jobpostingdescription'>Job Description:</label>
+                <textarea rows='4' cols='50' name='jobpostingdescription' placeholder='Enter job description here...' form='postjobform'></textarea>
+                
+                
+               
+                <p> <strong>Application Deadline Information:</strong> <p> 
+               
+               
+                <p>Application Deadline Date: <input type='date' name='Date'></p>
+               	<p> Application Deadline Time: <input type='time' name='Time'></p> 
+               	<span class="error">
+                     <?php
+						if (isset($_SESSION['errorTime']) && !empty($_SESSION['errorTime'])) {
+						 echo " * " . $_SESSION["errorTime"];
+					}
+					?>
+				</span></p>
+   				
+                <p> Job information </p> 
+                
+                <p> Work Start Time <input type='time' name='Time'> </p> 
+                
+                <p> Work End Time<input type='time' name='Time'></p> 
+                
+               
+           		<p> Working Days </p> 
+                  <input type='checkbox' > Monday 
+  				  <input type='checkbox'> Tuesday 
+                  <input type='checkbox' > Wednesday 
+  				  <input type='checkbox'> Thursday  
+				  <input type='checkbox' > Friday 
+                   
+                <p>Total Worked Hours per week: <span><input type='text' name='mainPageWorkedHours'></span></p>
+ 					
+                  <input type='radio' name = 'position' > Grader 
+  				  <input type='radio' name = 'position'> Teaching Assistant
+                  <input type='radio' name = 'position' > Lab Technician 
+
+                <p> <button type='button'>Add Job</button></p>
+                <p> <button type='button'>Delete Job</button></p>
+                
+                <p> <strong>Applicant List</strong><p>
+                   <select>
+						<option value='opt1'>opt1</option>
+				    </select>
+                    <p> <button type='button'>View Applicant Information</button></p>
+                
+                <?php/* This is commented out because it wont be needed for this user
+                    
+                <p> Profile Description <textarea rows='4' cols='50' name='jobpostingdescription' placeholder='Enter job description here...' form='postjobform'></textarea></p> 
+                
+                <p> Education level <p> 
+                  <input type='radio' name = 'educ' > Graduate 
+  				  <input type='radio' name = 'educ'> Undergraduate
+                
+                <p> <button type='button'>Accept Application</button></p>
+                <p> <button type='button'>Reject Application</button></p>
+                <p> <button type='button'>Evaluate Employee</button></p>  
+                */?>  
+            </form>
+<?php
+} else if (Controller::getCurrentUser() instanceof \ca\mcgill\ecse321\tamas\web\authentication\DepartmentAdministrator) {
+  ?>
+
+           
+            <form action='addjobposting.php' method='post' id='postjobform'>
+            	
+               <p> <strong>For Administrator</strong><p>
+                <p> <strong>Course List</strong><p>
+                    <select>
+						<option value='opt1'>opt1</option>
+				    </select>
+                <p> <button type='button'>Load Job List</button></p>
+                <p>Course Title: <span><input type='text' name='mainPageCourseTitle'></span></p>
+                <p>Amount of Course hours: <span><input type='text' name='mainPageCourseHours'></span></p>
+                <p>Amount of Lab Sessions: <span><input type='text' name='mainPageLabSessions'></span></p>
+                <p>Amount of Tutorial Sessions: <span><input type='text' name='mainPageTutorialSessions'></span></p>
+                <p>Amount of Enrolled Students: <span><input type='text' name='mainPageEnrolledStudents'></span></p>
+                <p>Budget Amount (CAD): <span><input type='text' name='mainPageBudget'></span></p>
+       
+                <p> <button type='button'>Add Course</button></p>
+                <p> <button type='button'>Delete Course</button></p>
+                <p> <button type='button'>Open Admin Page</button></p>
+                
+            </form>
+			   
+                 <p> <strong>Job List</strong><p>
+                   <select>
+  						<option value='opt1'> opt1 </option>
+				   </select>
+                 <p> <button type='button'>Load Job</button></p>        
+                 <p>Job Title: <span><input type='text' name='mainPageJobTitle'></span></p>
+                
+   
+                
+                <label for='jobpostingdescription'>Job Description:</label>
+                <textarea rows='4' cols='50' name='jobpostingdescription' placeholder='Enter job description here...' form='postjobform'></textarea>
+
+                 <p> <strong>Application Deadline Information:</strong> <p> 
+               
+               
+                 <p>Application Deadline Date: <input type='date' name='Date'></p>
+               	 <p> Application Deadline Time: <input type='time' name='Time'></p> 
+   				
+                 <p> Job information </p> 
+                
+                 <p> Work Start Time <input type='time' name='Time'> </p> 
+                
+                 <p> Work End Time<input type='time' name='Time'></p> 
+                
+               
+           		 <p> Working Days </p> 
+                  <input type='checkbox' > Monday 
+  				  <input type='checkbox'> Tuesday 
+                  <input type='checkbox' > Wednesday 
+  				  <input type='checkbox'> Thursday  
+				  <input type='checkbox' > Friday 
+                   
+                 <p>Total Worked Hours per week: <span><input type='text' name='mainPageWorkedHours'></span></p>
+ 
+                  <input type='radio' name = 'position' > Grader 
+  				  <input type='radio' name = 'position'> Teaching Assistant
+                  <input type='radio' name = 'position'> Lab Technician 
+                 <p> <button type='button'>Post Job</button></p>
+                 <p> <strong>Applicant List</strong><p>
+                   <select>
+						<option value='opt1'>opt1</option>
+				    </select>
+                    <p> <button type='button'>View Applicant Information</button></p>
+                 <p> Profile Description <textarea rows='4' cols='50' name='jobpostingdescription' placeholder='Enter job description here...' form='postjobform'></textarea></p> 
+                
+                 <p> Education level <p> 
+                  <input type='radio' name = 'educ' > Graduate 
+  				  <input type='radio' name = 'educ'> Undergraduate
+                  
+                 <p> <button type='button'>Accept Employment</button></p>
+                 <p> <button type='button'>Reject Employment</button></p>
+                        
+<?php
+} else {
+    throw new Exception("Invalid current user.");
+}
+?>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+package ca.mcgill.ecse321.tamas.application;
+
+import ca.mcgill.ecse321.tamas.model.DepartmentAdministrator;
+import ca.mcgill.ecse321.tamas.model.Tamas;
+
+public class TamasApplicationStartup {
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Tamas tamas = new Tamas();
+        DepartmentAdministrator admin = new DepartmentAdministrator(null, null);
+        tamas.addUser(admin);
+        System.out.println(tamas.getUsers());
+    }
+
+}

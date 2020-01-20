@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.mcgill.ecse321.tamas.mobile.view.ProfileActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_prompt"
+            android:text="@string/name_prompt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:layout_toRightOf="@id/name_prompt"
+            android:layout_toEndOf="@id/name_prompt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/studentID_prompt"
+            android:layout_below="@id/name_prompt"
+            android:text="@string/studentID_prompt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/studentID"
+            android:layout_toRightOf="@id/studentID_prompt"
+            android:layout_toEndOf="@id/studentID_prompt"
+            android:layout_alignBaseline="@id/studentID_prompt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/email"
+            android:layout_toRightOf="@id/studentID_prompt"
+            android:layout_toEndOf="@id/studentID_prompt"
+            android:layout_alignBaseline="@id/studentID_prompt"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/experience_heading"
+            android:text="@string/experience_heading"
+            android:layout_below="@id/studentID_prompt"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#888888"
+            android:layout_below="@id/experience_heading"
+            android:id="@+id/separator"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/experience"
+            android:layout_below="@id/separator"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_button"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/experience"
+            android:id="@+id/edit_button"
+            android:onClick="editProfile"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,15 @@
+package ca.mcgill.ecse321.tamas.view;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+public class MainPage extends JFrame {
+
+	
+}

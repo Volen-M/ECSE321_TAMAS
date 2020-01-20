@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</a> &gt; <a href="../../index.html" class="el_group">TAMASDesktop</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">ca.mcgill.ecse321.tamas.authentication</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.25.0-9e8af9e modeling language!*/
+
+package ca.mcgill.ecse321.tamas.authentication;
+
+// line 8 &quot;../../../../../Authentication.ump&quot;
+public abstract class User
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //User Attributes
+  private String username;
+  private String password;
+  private String name;
+
+  //User Associations
+  private Authentication authentication;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+<span class="fc" id="L26">  public User(String aUsername, String aPassword, String aName)</span>
+  {
+<span class="fc" id="L28">    username = aUsername;</span>
+<span class="fc" id="L29">    password = aPassword;</span>
+<span class="fc" id="L30">    name = aName;</span>
+<span class="fc" id="L31">  }</span>
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setUsername(String aUsername)
+  {
+<span class="nc" id="L39">    boolean wasSet = false;</span>
+<span class="nc" id="L40">    username = aUsername;</span>
+<span class="nc" id="L41">    wasSet = true;</span>
+<span class="nc" id="L42">    return wasSet;</span>
+  }
+
+  public boolean setPassword(String aPassword)
+  {
+<span class="fc" id="L47">    boolean wasSet = false;</span>
+<span class="fc" id="L48">    password = aPassword;</span>
+<span class="fc" id="L49">    wasSet = true;</span>
+<span class="fc" id="L50">    return wasSet;</span>
+  }
+
+  public boolean setName(String aName)
+  {
+<span class="nc" id="L55">    boolean wasSet = false;</span>
+<span class="nc" id="L56">    name = aName;</span>
+<span class="nc" id="L57">    wasSet = true;</span>
+<span class="nc" id="L58">    return wasSet;</span>
+  }
+
+  /**
+   * We may plan to store hashed passwords locally in a file for each username in the system.
+   */
+  public String getUsername()
+  {
+<span class="fc" id="L66">    return username;</span>
+  }
+
+  public String getPassword()
+  {
+<span class="fc" id="L71">    return password;</span>
+  }
+
+  public String getName()
+  {
+<span class="fc" id="L76">    return name;</span>
+  }
+
+  public Authentication getAuthentication()
+  {
+<span class="fc" id="L81">    return authentication;</span>
+  }
+
+  public boolean hasAuthentication()
+  {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">    boolean has = authentication != null;</span>
+<span class="nc" id="L87">    return has;</span>
+  }
+
+  public boolean setAuthentication(Authentication aAuthentication)
+  {
+<span class="fc" id="L92">    boolean wasSet = false;</span>
+<span class="fc" id="L93">    Authentication existingAuthentication = authentication;</span>
+<span class="fc" id="L94">    authentication = aAuthentication;</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">    if (existingAuthentication != null &amp;&amp; !existingAuthentication.equals(aAuthentication))</span>
+    {
+<span class="fc" id="L97">      existingAuthentication.removeUser(this);</span>
+    }
+<span class="fc bfc" id="L99" title="All 2 branches covered.">    if (aAuthentication != null)</span>
+    {
+<span class="fc" id="L101">      aAuthentication.addUser(this);</span>
+    }
+<span class="fc" id="L103">    wasSet = true;</span>
+<span class="fc" id="L104">    return wasSet;</span>
+  }
+
+  public void delete()
+  {
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">    if (authentication != null)</span>
+    {
+<span class="fc" id="L111">      Authentication placeholderAuthentication = authentication;</span>
+<span class="fc" id="L112">      this.authentication = null;</span>
+<span class="fc" id="L113">      placeholderAuthentication.removeUser(this);</span>
+    }
+<span class="fc" id="L115">  }</span>
+
+
+  public String toString()
+  {
+<span class="fc" id="L120">    String outputString = &quot;&quot;;</span>
+<span class="fc" id="L121">    return super.toString() + &quot;[&quot;+</span>
+<span class="fc" id="L122">            &quot;username&quot; + &quot;:&quot; + getUsername()+ &quot;,&quot; +</span>
+<span class="fc" id="L123">            &quot;password&quot; + &quot;:&quot; + getPassword()+ &quot;,&quot; +</span>
+<span class="fc" id="L124">            &quot;name&quot; + &quot;:&quot; + getName()+ &quot;]&quot; + System.getProperties().getProperty(&quot;line.separator&quot;) +</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">            &quot;  &quot; + &quot;authentication = &quot;+(getAuthentication()!=null?Integer.toHexString(System.identityHashCode(getAuthentication())):&quot;null&quot;)</span>
+<span class="fc" id="L126">     + outputString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>AllTests-TAMAS (11-Apr-2017 11:11:10 PM)</div></body></html>
